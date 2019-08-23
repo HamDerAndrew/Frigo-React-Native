@@ -1,5 +1,3 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
-import { createStackNavigator, createAppContainer } from 'react-navigation'; 
 import React, { Component } from 'react';
 
 import ProductComponent from '../Components/ProductComponent';
@@ -13,7 +11,7 @@ class PurchasePage extends Component {
         const promoImage = navigation.getParam('promoImage', 'NO-IMG');
 
         return(
-            <ProductComponent product={productName} itemPrice={productPrice} coverImage={promoImage}/>
+            <ProductComponent product={productName} itemPrice={productPrice} coverImage={promoImage} navigation={this.props.navigation}/>
         );
     }
 }

@@ -1,12 +1,17 @@
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Modal, Animated, Easing, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Slider } from 'react-native';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+
+import ProcessModal from '../views/ProcessModal';
 
 class ProductComponent extends Component {
-        state = {
+    state = {
         itemAmount: 1,
-        itemPrice: this.props.itemPrice
+        itemPrice: this.props.itemPrice,
+        isVisible: false,
+        animation: new Animated.Value(0),
     };
 
     addLess = () => {
@@ -25,19 +30,35 @@ class ProductComponent extends Component {
         this.setState( { itemAmount: increase, itemPrice: totalPrice} );
     };
 
+    paymentStart = () => {
+        Alert.alert(
+            'Alert Title',
+            `Køb ${this.state.itemAmount} ${this.props.product} for ${this.state.itemPrice} kroner?`,
+            [
+                {text: 'Ja', onPress: () => this.setState( {isVisible: true} )},
+                {text: 'Anuller', onPress: () => this.setState( {isVisible: false} )}
+            ],
+        );
+    }
+
+    closeModal = () => {
+        this.setState( {isVisible: false} )
+    }
+
     render() {
         return(
             <View style={styling.viewContainer}>
-                <View style={{flex: 2, paddingTop: 25, alignItems:'center', justifyContent: 'flex-start', flexDirection: 'row'}}>
-                    <View style={{flex: 1}}>
-                        <Image source={this.props.coverImage} style={{width: '65%', height:'100%', alignSelf: 'flex-start'}} resizeMode={'contain'}  />
+                <ProcessModal modalVisible={this.state.isVisible} closeModal={this.closeModal} />
+                <View style={styling.coverContainer}>
+                    <View style={styling.coverImgContainer}>
+                        <Image source={this.props.coverImage} style={styling.coverImg} resizeMode={'contain'}  />
                     </View>
-                    <View style={{width: 200, position: 'absolute', right: '5%', top: '40%'}}>
-                        <Text style={{paddingTop: 15, fontSize: 25, color: '#0F1C6F', fontWeight: 'bold'}}>{this.props.product}</Text>
+                    <View style={styling.imgTxtContainer}>
+                        <Text style={styling.imgTxt}>{this.props.product}</Text>
                     </View>
                 </View>
-                <View style={{flex: 1, paddingTop: 20}}>
-                    <View style={styling.amountContainer}> 
+                <View style={styling.amountContainer}>
+                    <View style={styling.amount}> 
                         <TouchableHighlight onPress={this.addLess} underlayColor='transparent' activeOpacity={.3} >
                             <Image source={require('../assets/icons/Minus.png')} />
                         </TouchableHighlight>
@@ -46,19 +67,13 @@ class ProductComponent extends Component {
                             <Image source={require('../assets/icons/PlusSign.png')} />
                         </TouchableHighlight>
                     </View>
-                    <Text style={{alignSelf: 'center'}}>{this.state.itemPrice} kr.</Text>
+                    <Text style={styling.amount}>{this.state.itemPrice} kr.</Text>
                 </View>
-                <View style={{flex: 0.5}}>
-                    <TouchableHighlight style={styling.payButton} onPress={ () => alert('Køb produkt')}>
+                <View style={styling.payBtnContainer}>
+                    {/* <TouchableHighlight style={styling.payButton} onPress={ () => this.props.navigation.navigate('Payment')}> */}
+                    <TouchableHighlight style={styling.payButton} onPress={ this.paymentStart } >
                         <Text style={styling.payButtonText}>Betal</Text>
                     </TouchableHighlight>
-{/*                     <Slider
-                            style={{height: 100}}
-                            maximumValue={1}
-                            minimumValue={0}
-                            minimumTrackTintColor="#61C61F"
-                            maximumTrackTintColor="#FFFFFF"
-                        /> */}
                 </View>
             </View>
         );
@@ -70,9 +85,43 @@ const styling = StyleSheet.create({
         flex: 2,
         backgroundColor: '#EFF2F5'
     },
-    amountContainer: {
+    coverContainer: {
+        flex: 2, 
+        paddingTop: 25, 
+        alignItems:'center', 
+        justifyContent: 'flex-start', 
+        flexDirection: 'row'
+    },
+    coverImgContainer: {
+        flex: 1
+    },
+    coverImg: {
+        width: '65%', 
+        height:'100%', 
+        alignSelf: 'flex-start'
+    },
+    imgTxtContainer: {
+        width: 200, 
+        position: 'absolute', 
+        right: '5%', 
+        top: '40%'
+    },
+    imgTxt: {
+        paddingTop: 15, 
+        fontSize: 25, 
+        color: '#0F1C6F', 
+        fontWeight: 'bold'
+    },
+    amount: {
         flexDirection: 'row',
         alignSelf: 'center'
+    },
+    amountContainer: {
+        flex: 1, 
+        paddingTop: 20
+    },
+    payBtnContainer: {
+        flex: .5
     },
     payButton: {
         backgroundColor: '#173BD1',

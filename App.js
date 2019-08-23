@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation'; 
 
-import MainPage from './views/MainPage';
+import Navigator from './Components/Navigator';
 
 export default function App() {
   return (
-    <MainPage />
+    <Navigator />
   );
 }
 
