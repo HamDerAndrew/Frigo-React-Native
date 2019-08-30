@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createSwitchNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
-import { Button } from 'react-native';
+import { Button, Image, Text } from 'react-native';
 import MainPage from '../views/MainPage';
 import PurchasePage from '../views/PurchasePage';
 import ProcessModal from '../views/ProcessModal';
 import HistoryPage from '../views/HistoryPage';
 import AuthLoadingPage from '../views/AuthLoadingPage';
 import LoginPage from '../views/LoginPage';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const HomeStack = createStackNavigator(
     {
@@ -30,12 +31,11 @@ const HomeStack = createStackNavigator(
           headerTitleStyle: {
             fontWeight: 'bold'
           },
-          headerRight: (
-            <Button title='add more' onPress={() => alert('"Select Multiple" coming soon!')} />
-          ),
+
         }
     }
 );
+
 
 //Hide tabbar on other pages
 HomeStack.navigationOptions = ( {navigation} ) => {

@@ -1,30 +1,58 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions, Button, AsyncStorage } from "react-native";
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
-import MainPage from './MainPage';
-import PurchasePage from './PurchasePage';
-import ProcessModal from './ProcessModal';
-import HistoryPage from './HistoryPage';
 
 class LoginPage extends Component {
-    static navigationOptions = {
-        title: 'Log in',
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    };
+
+/*     this.changeHandler = this.changeHandler.bind(this);
+    this.submitHandler = this.submitHandler.bind(this); */
+  }
+  static navigationOptions = {
+    title: 'Log in',
+  }
+
+  changeHandler = (event) => {
+    this.setState({event});
+  }
+
+  checkValid = () => {
+    if(this.state.email === '') {
+      alert("not valid email");
+      return false
     }
+  }
+
+  _signInAsync = async () => {
+ /*    if(this.state.email === '' || this.state.password === '') {
+      alert("Enter valid email and password");
+    } else {
+      await AsyncStorage.setItem('userToken', 'abc');
+      this.props.navigation.navigate('Main');
+    } */
+    await AsyncStorage.setItem('userToken', 'abc');
+    this.props.navigation.navigate('Main');
+  }
+
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: '#1B3ACA' }}>
+            <View style={loginStyles.viewWrapper}>
                 <ImageBackground source={require('../assets/images/large/login.png')} style={{ width: '100%', height: '100%' }}>
                     <View style={loginStyles.headerContainer}>
                         <Text style={loginStyles.headerTitle}>Log in</Text>
                     </View>
                     <View style={loginStyles.loginContainer}>
                         <View style={loginStyles.inputContainer}>
-                            <TextInput style={loginStyles.inputStyle} value={'E-mail'} />
-                            <TextInput style={loginStyles.inputStyle} value={'Password'} />
+                            <TextInput style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
+                            <TextInput style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
                         </View>
                     </View>
-                    <View style={ loginStyles.loginBtnContainer }>
+                    <View style={loginStyles.loginBtnContainer}>
                         <TouchableHighlight style={loginStyles.loginBtn} underlayColor='transparent' activeOpacity={.3} onPress={ this._signInAsync }>
                             <Text style={loginStyles.loginBtnText}>Log In</Text>
                         </TouchableHighlight>
@@ -33,62 +61,61 @@ class LoginPage extends Component {
             </View>
         );
     }
-
-    _signInAsync = async () => {
-      await AsyncStorage.setItem('userToken', 'abc');
-      this.props.navigation.navigate('Main');
-    }
 }
 
 var windowWidth = Dimensions.get('window').width;
 var totalWidth = windowWidth / 1.2;
 
 const loginStyles = StyleSheet.create({
-    loginContainer: {
-        flex: 1,
-        alignItems: 'center',
-        padding: 30
-    },
-    headerContainer: {
-        flex: .3,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
-    headerTitle: {
-        fontSize: 35,
-        color: 'white',
-    },
-    inputContainer: {
-        flex: 1,
-        alignSelf: 'stretch',
-        justifyContent: 'center'
-    },
-    inputStyle: {
-        backgroundColor: 'white',
-        marginBottom: 15,
-        padding: 10,
-        borderRadius: 10,
-        alignSelf: 'stretch'
-    },
-    loginBtnContainer: {
-        flex: .5, 
-        justifyContent: 'flex-end', 
-        alignItems: 'center',
-        paddingBottom: 40
-    },
-    loginBtn: {
-        backgroundColor: '#173BD1',
-        borderRadius: 35,
-        padding: 20,
-        width: totalWidth,
-        justifyContent: 'center',
-    },
-    loginBtnText: {
-        justifyContent: 'center',
-        alignSelf: 'center',
-        color: 'white',
-        fontSize: 22
-    }
+  viewWrapper: {
+      flex: 1,
+      backgroundColor: '#1B3ACA'  
+  },
+  loginContainer: {
+      flex: 1,
+      alignItems: 'center',
+      padding: 30
+  },
+  headerContainer: {
+      flex: .3,
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+  },
+  headerTitle: {
+      fontSize: 35,
+      color: 'white',
+  },
+  inputContainer: {
+      flex: 1,
+      alignSelf: 'stretch',
+      justifyContent: 'center'
+  },
+  inputStyle: {
+      backgroundColor: 'white',
+      marginBottom: 15,
+      padding: 10,
+      borderRadius: 10,
+      alignSelf: 'stretch'
+  },
+  loginBtnContainer: {
+      flex: .5, 
+      justifyContent: 'flex-end', 
+      alignItems: 'center',
+      paddingBottom: 40
+  },
+  loginBtn: {
+      backgroundColor: '#173BD1',
+      borderRadius: 35,
+      padding: 20,
+      width: totalWidth,
+      justifyContent: 'center',
+  },
+  loginBtnText: {
+      justifyContent: 'center',
+      alignSelf: 'center',
+      color: 'white',
+      fontSize: 22
+  }
 });
 
 /* const HomeStack = createStackNavigator(

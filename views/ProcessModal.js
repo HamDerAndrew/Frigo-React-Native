@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, Button, Animated } from 'react-native';
+import { View, Text, Modal, Button, Animated, StyleSheet } from 'react-native';
 
 class ProcessModal extends Component {
     state = {
@@ -36,10 +36,10 @@ class ProcessModal extends Component {
             /* onRequestClose={ () => this.setProcessVisible(false) } */
             visible={this.props.modalVisible}
             onShow={this.spinProcess}>
-            <View style={{justifyContent: 'center', alignItems: 'center', flex: 1, backgroundColor: '#1B3ACA'}}>
-                <Animated.Image source={ require('../assets/icons/process1.png') } style={[{width: '100%', height: '10%'}, animationStyle]} resizeMode={'contain'} />
-                <View style={{flex: .3, paddingTop: 30}}>
-                    <Text  style={{fontSize: 30, color: 'white'}}>Processing...</Text>
+            <View style={modalStyle.modalWrapper}>
+                <Animated.Image source={ require('../assets/icons/process1.png') } style={[modalStyle.animatedImg, animationStyle]} resizeMode={'contain'} />
+                <View style={modalStyle.processContainer}>
+                    <Text  style={modalStyle.processTxt}>Processing...</Text>
                     <Button color="red" title="Luk modal" onPress={this.props.closeModal} />
                 </View>
             </View>
@@ -47,5 +47,26 @@ class ProcessModal extends Component {
         );
     }
 }
+
+const modalStyle = StyleSheet.create({
+    modalWrapper: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        backgroundColor: '#1B3ACA'
+    },
+    animatedImg: {
+        width: '100%', 
+        height: '10%'
+    },
+    processContainer: {
+        flex: .3,
+        paddingTop: 30
+    },
+    processTxt: {
+        fontSize: 30,
+        color: 'white'
+    }
+});
 
 export default ProcessModal;
