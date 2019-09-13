@@ -1,42 +1,53 @@
 import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions, Button, AsyncStorage } from "react-native";
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+import allReducers from '../reducers';
+import setUserToken from '../actions/SetUserToken';
+import { connect } from 'react-redux';
+import { storeUrl } from 'expo/build/StoreReview/StoreReview';
+import loginReducer from '../reducers/IsLoggedReducer';
+import signIn from '../actions/SignIn';
+
 
 class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: ''
+      email: 'assl@houseofcode.io',
+      password: 'AndrewTestHOC',
+      //userToken: 'user_token',
+      error: '',
+      loading: false
     };
 
-/*     this.changeHandler = this.changeHandler.bind(this);
-    this.submitHandler = this.submitHandler.bind(this); */
+    //this.checkValid = this.checkValid.bind(this);
   }
   static navigationOptions = {
     title: 'Log in',
   }
 
-  changeHandler = (event) => {
-    this.setState({event});
-  }
-
   checkValid = () => {
-    if(this.state.email === '') {
-      alert("not valid email");
-      return false
-    }
-  }
-
-  _signInAsync = async () => {
- /*    if(this.state.email === '' || this.state.password === '') {
-      alert("Enter valid email and password");
-    } else {
-      await AsyncStorage.setItem('userToken', 'abc');
+    const { email, password, userToken } = this.state;
+    const cmsHeader = { 'Content-Type' : 'application/json' };
+    axios.post("https://staging.appcms.dk/api/xJ0-Lesy4riJAxvCTJe1KA/app-memberships/authenticate/basic", {
+      user: {
+        email: email,
+        password: password,
+      }
+    }, cmsHeader)
+    .then((response) => {
+      //Store the token from AppCms login
+      SecureStore.setItemAsync('userToken', response.data.token);
+      //use Redux action 'SetUserToken' to assign the token to the key 'userToken'
+      this.props.setUserToken(response.data.token);
+      //set loggedIn to true
+      this.props.signIn();
       this.props.navigation.navigate('Main');
-    } */
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('Main');
+      console.log('userToken: ' + userToken + '. Response.data.token: ' + response.data.token);
+    })
+    .catch((error) => console.log('Error from server: ' + error));
   }
 
     render() {
@@ -50,10 +61,13 @@ class LoginPage extends Component {
                         <View style={loginStyles.inputContainer}>
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
+                            <Text> User token: {this.state.userToken}</Text>
+                            <Text> SignIn state: {this.testRedux ? 'logged in' : 'not logged in'} </Text>
+                            <Text>{this.props.state}</Text>
                         </View>
                     </View>
                     <View style={loginStyles.loginBtnContainer}>
-                        <TouchableHighlight style={loginStyles.loginBtn} underlayColor='transparent' activeOpacity={.3} onPress={ this._signInAsync }>
+                        <TouchableHighlight style={loginStyles.loginBtn} underlayColor='transparent' activeOpacity={.3} onPress={ this.checkValid }>
                             <Text style={loginStyles.loginBtnText}>Log In</Text>
                         </TouchableHighlight>
                     </View>
@@ -118,87 +132,17 @@ const loginStyles = StyleSheet.create({
   }
 });
 
-/* const HomeStack = createStackNavigator(
-    {
-      AppMain: {
-        screen: MainPage,
-      },
-      Purchase: {
-        screen: PurchasePage,
-      },
-      ModalWindow: {
-        screen: ProcessModal,
-      }
-    },
-    {
-      defaultNavigationOptions: {
-        headerStyle: {
-          backgroundColor: '#EFF2F5'
-        },
-        headerTintColor: '#001DD1',
-        headerTitleStyle: {
-          fontWeight: 'bold'
-        },
-        headerRight: (
-          <Button title='add more' onPress={() => alert("pressed")} />
-        ),
-      }
-    }
-  );
-  
-  HomeStack.navigationOptions = ( {navigation} ) => {
-    let tabBarVisible = true;
-    if (navigation.state.index > 0) {
-      tabBarVisible = false;
-    }
-    return {
-      tabBarVisible,
-    };
-  };
-  
-  const HistoryStack = createStackNavigator(
-    {
-    Historik: HistoryPage,
-    },
-    {
-      defaultNavigationOptions: {
-        headerStyle: {
-          backgroundColor: '#EFF2F5'
-        },
-        headerTintColor: '#001DD1',
-        headerTitle: 'Historik',
-        headerTitleStyle: {
-          fontWeight: 'bold'
-        },
-      }
-    }
-  );
-  
-  const TabNav = createBottomTabNavigator(
-    {
-        Produkter: HomeStack,
-        Historik: HistoryStack,
-  
-    },
-    {
-      initialRouteName: 'Produkter',
-      tabBarOptions: {
-        activeTintColor: 'white',
-        inactiveTintColor: '#0F1C6F',
-        activeBackgroundColor: '#173CD1',
-        labelStyle: {
-          fontSize: 16,
-          paddingBottom: 10
-        }
-      }
-    },
-  );
+const mapStateToProps = (state) => {
+console.log("Maps props ", state);
+  return {
+    loggedIn: state.loggedIn,
+    userToken: state.userToken
+  }
+};
 
-const loginNav = createStackNavigator({
-    Login: LoginPage,
-    Main: TabNav,
-});
+const mapDispatchToProps = {
+  setUserToken,
+  signIn
+}
 
-export default createAppContainer(loginNav); */
-
-export default LoginPage;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

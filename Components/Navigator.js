@@ -7,7 +7,7 @@ import ProcessModal from '../views/ProcessModal';
 import HistoryPage from '../views/HistoryPage';
 import AuthLoadingPage from '../views/AuthLoadingPage';
 import LoginPage from '../views/LoginPage';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import PurchaseMulPage from '../views/PurchaseMulPage';
 
 const HomeStack = createStackNavigator(
     {
@@ -16,6 +16,9 @@ const HomeStack = createStackNavigator(
         },
         Purchase: {
             screen: PurchasePage,
+        },
+        PurchaseMore: {
+          screen: PurchaseMulPage,
         },
         Payment: {
             screen: ProcessModal
@@ -70,6 +73,7 @@ const HistoryStack = createStackNavigator(
     {
         Produkter: HomeStack,
         Historik: HistoryStack,
+/*         Flere: PurchaseMulPage, */
   
     },
     {

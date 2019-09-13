@@ -72,7 +72,7 @@ class ProductComponent extends Component {
                 <View style={styling.payBtnContainer}>
                     {/* <TouchableHighlight style={styling.payButton} onPress={ () => this.props.navigation.navigate('Payment')}> */}
                     <TouchableHighlight style={styling.payButton} onPress={ this.paymentStart } >
-                        <Text style={styling.payButtonText}>Betal</Text>
+                        <Text style={styling.payButtonText}>Køb</Text>
                     </TouchableHighlight>
                 </View>
             </View>

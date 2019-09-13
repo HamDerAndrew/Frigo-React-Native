@@ -1,20 +1,26 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation'; 
-
+import { createStore } from 'redux';
+import AllReducers from './reducers/index'; 
+import { Provider, useSelector } from 'react-redux';
 import Navigator from './Components/Navigator';
+
+const store = createStore(
+  AllReducers, 
+  //initial state'
+  {
+    loggedIn: false,
+    userToken: ''
+  },
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
 
 export default function App() {
   return (
-    <Navigator />
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-});
+//console.log(store.getState());
