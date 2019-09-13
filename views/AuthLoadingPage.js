@@ -13,15 +13,14 @@ class AuthLoadingPage extends Component {
         const userToken = await AsyncStorage.getItem('userToken');
         this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
     } */
-    checkToken = () => {
-        SecureStore.getItemAsync(id_token).then(
-            this.props.navigation.navigate(id_token ? 'Main' : 'Auth')
-            );
+    checkToken = async () => {
+        const userToken = await SecureStore.getItemAsync('userToken');
+        this.props.navigation.navigate(userToken ? 'Main' : 'Auth')
     }
     
     render() {
         return(
-            <View>
+            <View style={{flex: 1, alignContent: 'center', justifyContent: 'center'}}>
                 <ActivityIndicator />
                 <StatusBar barStyle="default" />
             </View>

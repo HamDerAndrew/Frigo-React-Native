@@ -17,7 +17,6 @@ class LoginPage extends Component {
     this.state = {
       email: 'assl@houseofcode.io',
       password: 'AndrewTestHOC',
-      //userToken: 'user_token',
       error: '',
       loading: false
     };
@@ -29,7 +28,7 @@ class LoginPage extends Component {
   }
 
   checkValid = () => {
-    const { email, password, userToken } = this.state;
+    const { email, password } = this.state;
     const cmsHeader = { 'Content-Type' : 'application/json' };
     axios.post("https://staging.appcms.dk/api/xJ0-Lesy4riJAxvCTJe1KA/app-memberships/authenticate/basic", {
       user: {
@@ -44,8 +43,8 @@ class LoginPage extends Component {
       this.props.setUserToken(response.data.token);
       //set loggedIn to true
       this.props.signIn();
-      this.props.navigation.navigate('Main');
-      console.log('userToken: ' + userToken + '. Response.data.token: ' + response.data.token);
+      this.props.navigation.navigate('AuthLoading');
+      console.log('Response.data.token: ' + response.data.token);
     })
     .catch((error) => console.log('Error from server: ' + error));
   }
@@ -61,7 +60,7 @@ class LoginPage extends Component {
                         <View style={loginStyles.inputContainer}>
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
-                            <Text> User token: {this.state.userToken}</Text>
+                            <Text> User token: {this.props.userToken}</Text>
                             <Text> SignIn state: {this.testRedux ? 'logged in' : 'not logged in'} </Text>
                             <Text>{this.props.state}</Text>
                         </View>
@@ -133,7 +132,7 @@ const loginStyles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-console.log("Maps props ", state);
+console.log("Maps props LoginPage ", state);
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken

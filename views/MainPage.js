@@ -5,6 +5,7 @@ import CircleBtn from '../Components/CircleBtn';
 import SelectMultipleBtn from '../Components/SelectMultipleBtn';
 import signIn from '../actions/SignIn';
 import { connect } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 
 class MainPage extends React.Component {
 constructor(props) {
@@ -24,9 +25,11 @@ static navigationOptions = ({navigation}) => {
   }
 }
 
-signOut =  () => {
+signOut = async () => {
+  //set loggedIn to false
   this.props.signIn();
-  this.props.navigation.navigate('Auth');
+  await SecureStore.deleteItemAsync('userToken')
+  .then(this.props.navigation.navigate('Auth'));
 }
 
 componentDidMount() {
@@ -116,7 +119,6 @@ renderList = data => {
               <Text style={productStyles.productItems}>{data.item.product}</Text>
               <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
           </View>
-         {/*  <Image style={productStyles.listArrow} source={data.item.selectedImg}/> */}
           <Image style={productStyles.listArrow} />
         </View>
       </TouchableHighlight>
@@ -227,6 +229,7 @@ const productStyles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+  console.log("Maps props MainPage ", state);
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken
