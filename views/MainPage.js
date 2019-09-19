@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, FlatList, Image, AsyncStorage } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
 import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
 import CircleBtn from '../Components/CircleBtn';
 import SelectMultipleBtn from '../Components/SelectMultipleBtn';
 import signIn from '../actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
+import setUserToken from '../actions/SetUserToken';
+import unsetToken from '../actions/UnsetToken';
 
 class MainPage extends React.Component {
 constructor(props) {
@@ -25,11 +27,12 @@ static navigationOptions = ({navigation}) => {
   }
 }
 
-signOut = async () => {
+signOut = () => {
   //set loggedIn to false
   this.props.signIn();
-  await SecureStore.deleteItemAsync('userToken')
-  .then(this.props.navigation.navigate('Auth'));
+  SecureStore.deleteItemAsync('userToken');
+  this.props.unsetToken();
+  this.props.navigation.navigate('Auth');
 }
 
 componentDidMount() {
@@ -101,11 +104,13 @@ renderList = data => {
         });
       } }> 
         <View style={productStyles.listContainer}>
-            <Image source={data.item.listImage} style={productStyles.productListImg} />
+          <View style={{flexDirection:'row'}}>
+          <Image source={data.item.listImage} style={productStyles.productListImg} />
             <View style={productStyles.productInfo}>
               <Text style={productStyles.productItems}>{data.item.product}</Text>
               <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
             </View>
+          </View>
             <Image style={productStyles.listArrow} source={require('../assets/icons/list-arrow.png')} />
         </View>
       </TouchableHighlight>
@@ -114,10 +119,12 @@ renderList = data => {
     return(
       <TouchableHighlight underlayColor='transparent' activeOpacity={.3}  onPress={ () => this.selectItem(data)}>
         <View style={[productStyles.listContainer, data.item.selectedHighlight]}>
+          <View style={{flexDirection: 'row'}}>
           <Image source={data.item.listImage} style={productStyles.productListImg} />
-          <View style={productStyles.productInfo}>
-              <Text style={productStyles.productItems}>{data.item.product}</Text>
-              <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
+            <View style={productStyles.productInfo}>
+                <Text style={productStyles.productItems}>{data.item.product}</Text>
+                <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
+            </View>
           </View>
           <Image style={productStyles.listArrow} />
         </View>
@@ -193,6 +200,7 @@ const productStyles = StyleSheet.create({
       shadowOffset: {width:1, height: 2},
       shadowOpacity: .3,
       shadowRadius: 5,
+      justifyContent: 'space-between'
   },
   productInfo: {
       flexDirection: 'column'
@@ -200,7 +208,7 @@ const productStyles = StyleSheet.create({
   productItems: {
       paddingLeft: 10,
       fontSize: 18, 
-      width: 300
+      //width: 300
   },
   itemPrice: {
     fontSize: 12,
@@ -229,7 +237,7 @@ const productStyles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  console.log("Maps props MainPage ", state);
+  //console.log("Maps props MainPage ", state);
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken
@@ -237,7 +245,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  signIn
+  signIn,
+  unsetToken
 }
 
 //export default  MainPage;

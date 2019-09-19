@@ -8,6 +8,7 @@ import HistoryPage from '../views/HistoryPage';
 import AuthLoadingPage from '../views/AuthLoadingPage';
 import LoginPage from '../views/LoginPage';
 import PurchaseMulPage from '../views/PurchaseMulPage';
+import PaymentLoadingPage from '../views/PaymentLoadingPage'
 
 const HomeStack = createStackNavigator(
     {
@@ -21,8 +22,11 @@ const HomeStack = createStackNavigator(
           screen: PurchaseMulPage,
         },
         Payment: {
-            screen: ProcessModal
+            screen: ProcessModal,
         },
+/*         PaymentLoad: {
+          screen: PaymentLoadingPage,
+        } */
     },
     {
       initialRouteName: 'AppMain',
@@ -93,6 +97,7 @@ const HistoryStack = createStackNavigator(
   const AuthStack = createStackNavigator(
     {
         SignIn: LoginPage,
+        PaymentLoad: PaymentLoadingPage,
     },
     {
       defaultNavigationOptions: {

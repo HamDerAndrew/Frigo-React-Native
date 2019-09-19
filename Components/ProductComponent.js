@@ -2,16 +2,14 @@ import { StyleSheet, Text, View, Button, Image, Modal, Animated, Easing, Alert }
 import React, { Component } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Slider } from 'react-native';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
 
 import ProcessModal from '../views/ProcessModal';
 
 class ProductComponent extends Component {
     state = {
+        itemProduct: this.props.product,
         itemAmount: 1,
         itemPrice: this.props.itemPrice,
-        isVisible: false,
-        animation: new Animated.Value(0),
     };
 
     addLess = () => {
@@ -30,25 +28,28 @@ class ProductComponent extends Component {
         this.setState( { itemAmount: increase, itemPrice: totalPrice} );
     };
 
-    paymentStart = () => {
-        Alert.alert(
-            'Alert Title',
-            `Køb ${this.state.itemAmount} ${this.props.product} for ${this.state.itemPrice} kroner?`,
-            [
-                {text: 'Ja', onPress: () => this.setState( {isVisible: true} )},
-                {text: 'Anuller', onPress: () => this.setState( {isVisible: false} )}
-            ],
-        );
+    confirmPurchase = () => {
+        this.props.navigation.navigate('PaymentLoad', {
+            productName: this.state.itemProduct,
+            productAmount: this.state.itemAmount,
+            productPrice: this.state.itemPrice
+        });
     }
 
-    closeModal = () => {
-        this.setState( {isVisible: false} )
+    paymentStart = () => {
+        Alert.alert(
+            'Bekræft',
+            `Køb ${this.state.itemAmount} ${this.props.product} for ${this.state.itemPrice} kroner?`,
+            [
+                {text: 'Ja', onPress: this.confirmPurchase},
+                {text: 'Anuller'}
+            ],
+        );
     }
 
     render() {
         return(
             <View style={styling.viewContainer}>
-                <ProcessModal modalVisible={this.state.isVisible} closeModal={this.closeModal} />
                 <View style={styling.coverContainer}>
                     <View style={styling.coverImgContainer}>
                         <Image source={this.props.coverImage} style={styling.coverImg} resizeMode={'contain'}  />
@@ -62,7 +63,9 @@ class ProductComponent extends Component {
                         <TouchableHighlight onPress={this.addLess} underlayColor='transparent' activeOpacity={.3} >
                             <Image source={require('../assets/icons/Minus.png')} />
                         </TouchableHighlight>
-                        <Text style={styling.amountDisplay }>{this.state.itemAmount}</Text>
+                        <View style={styling.amountDisplayTwo}>
+                            <Text style={styling.amountDisplay }>{this.state.itemAmount}</Text>
+                        </View>                       
                         <TouchableHighlight onPress={this.addMore} underlayColor='transparent' activeOpacity={.3} >
                             <Image source={require('../assets/icons/PlusSign.png')} />
                         </TouchableHighlight>
@@ -101,9 +104,9 @@ const styling = StyleSheet.create({
         alignSelf: 'flex-start'
     },
     imgTxtContainer: {
-        width: 200, 
+        width: '50%', 
         position: 'absolute', 
-        right: '5%', 
+        right: '4%', 
         top: '40%'
     },
     imgTxt: {
@@ -136,6 +139,11 @@ const styling = StyleSheet.create({
         color: 'white'
     },
     amountDisplay: {
+        fontSize: 30,
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    amountDisplayTwo: {
         borderStyle: 'solid',
         borderWidth: 2.5,
         borderColor: '#9CA0C3',
@@ -144,10 +152,7 @@ const styling = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: 'white',
-        fontSize: 30,
         borderRadius: 10,
-        textAlign: 'center',
-        textAlignVertical: 'center'
     }
 });
 
