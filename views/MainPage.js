@@ -47,7 +47,7 @@ getData = () => {
   };
   axios.get(url, cmsHeader)
   .then( (res) => {
-    console.log(res.data);
+    console.log(res.data.products.items);
     console.log()
     }
   )

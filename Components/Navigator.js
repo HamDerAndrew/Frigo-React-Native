@@ -66,7 +66,7 @@ const HistoryStack = createStackNavigator(
         headerTitle: 'Historik',
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontFamily: 'Roboto'
+          fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
         },
       }
     }
@@ -85,7 +85,7 @@ const HistoryStack = createStackNavigator(
         headerTitle: 'Profil',
         headerTitleStyle: {
           fontWeight: 'bold',
-          fontFamily: 'Roboto'
+          fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
         },
       }
     }
