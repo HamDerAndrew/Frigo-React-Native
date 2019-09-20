@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
 import { createStackNavigator, createSwitchNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
-import { Button, Image, Text } from 'react-native';
 import MainPage from '../views/MainPage';
 import PurchasePage from '../views/PurchasePage';
 import ProcessModal from '../views/ProcessModal';
@@ -25,9 +23,6 @@ const HomeStack = createStackNavigator(
         Payment: {
             screen: ProcessModal,
         },
-/*         PaymentLoad: {
-          screen: PaymentLoadingPage,
-        } */
     },
     {
       initialRouteName: 'AppMain',
@@ -100,7 +95,6 @@ const HistoryStack = createStackNavigator(
         Produkter: HomeStack,
         Historik: HistoryStack,
         Profil: ProfileStack
-/*         Flere: PurchaseMulPage, */
   
     },
     {

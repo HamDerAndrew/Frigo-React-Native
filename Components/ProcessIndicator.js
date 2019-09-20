@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Modal, Animated, StyleSheet } from 'react-native';
+import { View, Text, Modal, Animated, StyleSheet } from 'react-native';
 
 class ProcessIndicator extends Component {
     constructor(props) {

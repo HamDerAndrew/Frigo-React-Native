@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions, Button, AsyncStorage } from "react-native";
-import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions } from "react-native";
+import { TouchableHighlight } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import allReducers from '../reducers';
 import setUserToken from '../actions/SetUserToken';
 import { connect } from 'react-redux';
-import { storeUrl } from 'expo/build/StoreReview/StoreReview';
-import loginReducer from '../reducers/IsLoggedReducer';
 import signIn from '../actions/SignIn';
 
 
@@ -20,8 +17,6 @@ class LoginPage extends Component {
       error: '',
       loading: false
     };
-
-    //this.checkValid = this.checkValid.bind(this);
   }
   static navigationOptions = {
     title: 'Log in',
@@ -133,7 +128,6 @@ const loginStyles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-//console.log("Maps props LoginPage ", state);
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken

@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, Button, Image, Modal, Animated, Easing, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { Slider } from 'react-native';
 
 import ProcessModal from '../views/ProcessModal';
 

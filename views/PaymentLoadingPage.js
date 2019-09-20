@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, Animated, StyleSheet } from 'react-native';
-import ProcessModal from './ProcessModal';
+import { View } from 'react-native';
 import ProcessIndicator from '../Components/ProcessIndicator';
 
 class PaymentLoadingPage extends Component {

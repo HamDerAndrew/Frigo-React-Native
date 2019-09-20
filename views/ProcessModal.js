@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 class ProcessModal extends Component {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 
 class ProductsListComponent extends Component {
     constructor(props) {

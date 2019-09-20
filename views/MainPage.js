@@ -1,16 +1,13 @@
-import React from "react";
-import { View, Text, Button, StyleSheet, FlatList, Image } from "react-native";
-import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler";
-import CircleBtn from '../Components/CircleBtn';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import SelectMultipleBtn from '../Components/SelectMultipleBtn';
 import signIn from '../actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
-import setUserToken from '../actions/SetUserToken';
 import unsetToken from '../actions/UnsetToken';
-import axios from 'axios';
 
-class MainPage extends React.Component {
+class MainPage extends Component {
 constructor(props) {
   super(props)
   this.state = {
@@ -253,7 +250,5 @@ const mapDispatchToProps = {
   signIn,
   unsetToken
 }
-
-//export default  MainPage;
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

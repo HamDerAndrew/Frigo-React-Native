@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { createStore } from 'redux';
 import AllReducers from './reducers/index'; 
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import Navigator from './Components/Navigator';
 
 const store = createStore(
@@ -22,5 +21,3 @@ export default function App() {
     </Provider>
   );
 }
-
-//console.log(store.getState());

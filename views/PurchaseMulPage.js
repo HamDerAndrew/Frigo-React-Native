@@ -19,7 +19,6 @@ class PurchaseMulPage extends Component {
             <View style={{backgroundColor: '#EFF2F5', flex:1}}>
                 <Text>Select multiple page</Text>
                 <FlatList data={productList} keyExtractor={(productList) => productList.product} renderItem={ ({item}) => <Text> {item.product}</Text>}/>
-               {/*  <ProductsListComponent product={productName} itemPrice={productPrice} coverImage={promoImage} navigation={this.props.navigation}/> */}
             </View>
         );
     }

@@ -33,7 +33,6 @@ class ProfilePage extends Component {
 }
 
 const mapStateToProps = (state) => {
-    //console.log("Maps props MainPage ", state);
     return {
       loggedIn: state.loggedIn,
       userToken: state.userToken
