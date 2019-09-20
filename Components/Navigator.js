@@ -9,6 +9,7 @@ import AuthLoadingPage from '../views/AuthLoadingPage';
 import LoginPage from '../views/LoginPage';
 import PurchaseMulPage from '../views/PurchaseMulPage';
 import PaymentLoadingPage from '../views/PaymentLoadingPage'
+import ProfilePage from '../views/ProfilePage';
 
 const HomeStack = createStackNavigator(
     {
@@ -36,7 +37,8 @@ const HomeStack = createStackNavigator(
           },
           headerTintColor: '#001DD1',
           headerTitleStyle: {
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            fontFamily: 'Roboto'
           },
 
         }
@@ -67,16 +69,37 @@ const HistoryStack = createStackNavigator(
         headerTintColor: '#001DD1',
         headerTitle: 'Historik',
         headerTitleStyle: {
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          fontFamily: 'Roboto'
         },
       }
     }
   );
 
+  const ProfileStack = createStackNavigator(
+    {
+      Profil: ProfilePage
+    },
+    {
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: '#EFF2F5'
+        },
+        headerTintColor: '#001DD1',
+        headerTitle: 'Profil',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontFamily: 'Roboto'
+        },
+      }
+    }
+  )
+
   const TabNav = createBottomTabNavigator(
     {
         Produkter: HomeStack,
         Historik: HistoryStack,
+        Profil: ProfileStack
 /*         Flere: PurchaseMulPage, */
   
     },

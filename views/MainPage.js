@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import setUserToken from '../actions/SetUserToken';
 import unsetToken from '../actions/UnsetToken';
+import axios from 'axios';
 
 class MainPage extends React.Component {
 constructor(props) {
@@ -41,6 +42,18 @@ componentDidMount() {
 }
 
 getData = () => {
+/*   const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchases';
+  const cmsHeader = { 
+    'Content-Type': 'application/json', 
+    'Authorization': `Bearer ${this.props.userToken}` 
+  };
+  axios.get(url, cmsHeader)
+  .then( (res) => {
+    console.log(res.data);
+    console.log()
+    }
+  )
+  .catch((error) => console.log(error));  */
   let productListData = [
     {id: 0, product: 'Red Bull', price: 12, listImage: require('../assets/images/small/redbull-small.png'), bigImg: require('../assets/images/large/red-bull.png')},
     {id: 1, product: 'Coca Cola Zero', price: 5, listImage: require('../assets/images/small/cola-zero-small.png'), bigImg: require('../assets/images/large/cola-zero-big.png')},
@@ -155,13 +168,8 @@ renderList = data => {
                 });
               } }> 
               <Text style={{alignSelf: 'center', color: 'white'}}>NEXT</Text>
-              </TouchableHighlight> :             
-              <TouchableHighlight onPress={ this.signOut } style={{justifyContent: 'center', alignSelf: 'center', backgroundColor: '#0f1c6f', borderWidth: 1, borderColor: 'white', borderRadius: 70, padding: 15, width: 75, height: 75}}>
-                <Text style={{alignSelf: 'center', color: 'white'}}>Log u'</Text>
-              </TouchableHighlight>
+              </TouchableHighlight> : null
             }
-            <Text>User token: {this.props.userToken}</Text>
-            <View style={{marginBottom: 15}}></View>
         </View>
       </View>
     );
@@ -171,12 +179,10 @@ renderList = data => {
 const productStyles = StyleSheet.create({
   productWrapper: {
       flex: 1, 
-      alignItems: "center", 
-      justifyContent: "center", 
       backgroundColor: '#EFF2F5'
   },
   productContainer: {
-      flex: 1,
+      flex: 1
   },
   selectedStyle: {
     borderColor: '#173BD1',
@@ -191,24 +197,23 @@ const productStyles = StyleSheet.create({
       backgroundColor: 'white',
       borderWidth: 1,
       borderColor: 'transparent',
-      marginBottom: 5,
       marginTop: 5,
-      marginLeft: 10,
-      marginRight: 10,
+      marginBottom: 5,
       borderRadius: 10,
       shadowColor: 'black',
       shadowOffset: {width:1, height: 2},
       shadowOpacity: .3,
       shadowRadius: 5,
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      alignSelf: 'center',
+      width: '90%'
   },
   productInfo: {
       flexDirection: 'column'
   },
   productItems: {
       paddingLeft: 10,
-      fontSize: 18, 
-      //width: 300
+      fontSize: 18
   },
   itemPrice: {
     fontSize: 12,
@@ -232,12 +237,12 @@ const productStyles = StyleSheet.create({
     borderRadius: 70, 
     padding: 15, 
     width: 75, 
-    height: 75
+    height: 75,
+    marginBottom: 15
   }
 });
 
 const mapStateToProps = (state) => {
-  //console.log("Maps props MainPage ", state);
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken
