@@ -1,3 +1,4 @@
+import { Platform } from 'react-native'
 import { createStackNavigator, createSwitchNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
 import MainPage from '../views/MainPage';
 import PurchasePage from '../views/PurchasePage';
@@ -33,7 +34,7 @@ const HomeStack = createStackNavigator(
           headerTintColor: '#001DD1',
           headerTitleStyle: {
             fontWeight: 'bold',
-            fontFamily: 'Roboto'
+            fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
           },
 
         }

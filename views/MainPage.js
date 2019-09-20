@@ -6,6 +6,7 @@ import signIn from '../actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import unsetToken from '../actions/UnsetToken';
+import axios from 'axios';
 
 class MainPage extends Component {
 constructor(props) {
@@ -39,7 +40,7 @@ componentDidMount() {
 }
 
 getData = () => {
-/*   const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchases';
+  const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
   const cmsHeader = { 
     'Content-Type': 'application/json', 
     'Authorization': `Bearer ${this.props.userToken}` 
@@ -50,8 +51,8 @@ getData = () => {
     console.log()
     }
   )
-  .catch((error) => console.log(error));  */
-  let productListData = [
+  .catch((error) => console.log(error)); 
+  /* let productListData = [
     {id: 0, product: 'Red Bull', price: 12, listImage: require('../assets/images/small/redbull-small.png'), bigImg: require('../assets/images/large/red-bull.png')},
     {id: 1, product: 'Coca Cola Zero', price: 5, listImage: require('../assets/images/small/cola-zero-small.png'), bigImg: require('../assets/images/large/cola-zero-big.png')},
     {id: 2, product: 'Coca Cola Classic', price: 5, listImage: require('../assets/images/small/cola-small.png'), bigImg: require('../assets/images/large/Cola-big.png')},
@@ -71,7 +72,7 @@ getData = () => {
   });
   this.setState({
     productData: productListData,
-  });
+  }); */
 }
 
 setMultipleState = () => {
