@@ -34,6 +34,7 @@ const HomeStack = createStackNavigator(
           headerTintColor: '#001DD1',
           headerTitleStyle: {
             fontWeight: 'bold',
+            //Set font to Roboto to fix a OnePlus problem with displaying the page title.
             fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
           },
 

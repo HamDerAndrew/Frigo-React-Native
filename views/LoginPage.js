@@ -39,7 +39,7 @@ class LoginPage extends Component {
       //set loggedIn to true
       this.props.signIn();
       this.props.navigation.navigate('AuthLoading');
-      console.log('Response.data.token: ' + response.data.token);
+      //console.log('Response.data.token: ' + response.data.token);
     })
     .catch((error) => console.log('Error from server: ' + error));
     //this.props.navigation.navigate('Main');

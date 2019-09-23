@@ -14,6 +14,7 @@ constructor(props) {
   this.state = {
     selectMultiple: false,
     productData: [],
+    listSource: [],
     selectedItems: [],
   };
 }
@@ -47,8 +48,16 @@ getData = () => {
   };
   axios.get(url, cmsHeader)
   .then( (res) => {
-    console.log(res.data.products.items);
-    console.log()
+    res = res.data.data.products.items.map( item => {
+      item.isSelected = false;
+      item.selectedHighlight = productStyles.listContainer;
+      item.selectedImg = require('../assets/icons/list-checkmark.png');
+      item.price = (parseFloat(item.price).toFixed(2) / 100);
+      return item;
+    });
+    productData = res;
+    this.setState( {productData: res} );
+    console.log(productData);
     }
   )
   .catch((error) => console.log(error)); 
@@ -109,16 +118,16 @@ renderList = data => {
     return(
       <TouchableHighlight underlayColor='transparent' activeOpacity={.3} onPress={ () => {
         this.props.navigation.navigate('Purchase', {
-          productName: data.item.product,
+          productName: data.item.title,
           productPrice: data.item.price,
-          promoImage: data.item.bigImg
+          promoImage: data.item.big_image.file_url
         });
       } }> 
         <View style={productStyles.listContainer}>
           <View style={{flexDirection:'row'}}>
-          <Image source={data.item.listImage} style={productStyles.productListImg} />
+          <Image source={{ uri: data.item.list_image.file_url }} style={productStyles.productListImg} />
             <View style={productStyles.productInfo}>
-              <Text style={productStyles.productItems}>{data.item.product}</Text>
+              <Text style={productStyles.productItems}>{data.item.title}</Text>
               <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
             </View>
           </View>
@@ -131,9 +140,9 @@ renderList = data => {
       <TouchableHighlight underlayColor='transparent' activeOpacity={.3}  onPress={ () => this.selectItem(data)}>
         <View style={[productStyles.listContainer, data.item.selectedHighlight]}>
           <View style={{flexDirection: 'row'}}>
-          <Image source={data.item.listImage} style={productStyles.productListImg} />
+          <Image source={{ uri: data.item.list_image.file_url }} style={productStyles.productListImg} />
             <View style={productStyles.productInfo}>
-                <Text style={productStyles.productItems}>{data.item.product}</Text>
+                <Text style={productStyles.productItems}>{data.item.title}</Text>
                 <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
             </View>
           </View>
@@ -149,7 +158,7 @@ renderList = data => {
       <View style={productStyles.productWrapper}>
         <View style={productStyles.productContainer}>
           <FlatList style={productStyles.flatList} 
-            keyExtractor={ (productData) => productData.product} 
+            keyExtractor={ (productData) => productData.title} 
             data={this.state.productData}
             extraData={this.state}
             renderItem={ item => this.renderList(item)}

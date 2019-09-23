@@ -11,7 +11,7 @@ class PurchasePage extends Component {
         const promoImage = navigation.getParam('promoImage', 'NO-IMG');
 
         return(
-            <ProductComponent product={productName} itemPrice={productPrice} coverImage={promoImage} navigation={this.props.navigation}/>
+            <ProductComponent product={productName} itemPrice={productPrice} coverImage={{ uri:promoImage }} navigation={this.props.navigation}/>
         );
     }
 }
