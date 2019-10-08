@@ -7,6 +7,7 @@ import axios from 'axios';
 import setUserToken from '../actions/SetUserToken';
 import { connect } from 'react-redux';
 import signIn from '../actions/SignIn';
+import setItems from '../actions/SetItems';
 import * as Crypto from 'expo-crypto';
 
 
@@ -20,7 +21,7 @@ class LoginPage extends Component {
       loading: false,
       testImage: null
     };
-
+    this.getProducts();
     //this.cacheImages();
   }
   static navigationOptions = {
@@ -44,6 +45,21 @@ class LoginPage extends Component {
     console.log("DOWNLOAD IMAGE");
     const newImage = await FileSystem.downloadAsync(url, path);
     this.setState({testImage: {uri: newImage.url}});
+  }
+
+  getProducts = () => {
+    const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
+    const cmsHeader = { 
+      'Content-Type': 'application/json', 
+      //'Authorization': `Bearer ${this.props.userToken}` 
+    };
+    axios.get(url,cmsHeader)
+    .then((res) => {
+      const contentItems = res.data.data.products.items;
+      this.props.setItems(contentItems);
+      console.log("contentItems: ", this.props.contentItems);
+    })
+    .catch(error => console.log(error))
   }
 
   cacheImages = () => {
@@ -183,13 +199,15 @@ const loginStyles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
-    userToken: state.userToken
+    userToken: state.userToken,
+    contentItems: state.contentItems
   }
 };
 
 const mapDispatchToProps = {
   setUserToken,
-  signIn
+  signIn,
+  setItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
