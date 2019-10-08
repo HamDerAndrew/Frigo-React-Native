@@ -9,9 +9,10 @@ class PurchasePage extends Component {
         const productName = navigation.getParam('productName', 'NO-PRODUCT');
         const productPrice = navigation.getParam('productPrice', 'NO-PRICE');
         const promoImage = navigation.getParam('promoImage', 'NO-IMG');
+        const productId = navigation.getParam('productId', 'NO-ID');
 
         return(
-            <ProductComponent product={productName} itemPrice={productPrice} coverImage={{ uri:promoImage }} navigation={this.props.navigation}/>
+            <ProductComponent product={productName} itemPrice={productPrice} coverImage={{ uri:promoImage }} navigation={this.props.navigation} itemId={productId}/>
         );
     }
 }

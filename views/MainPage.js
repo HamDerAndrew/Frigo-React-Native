@@ -27,13 +27,13 @@ static navigationOptions = ({navigation}) => {
   }
 }
 
-signOut = () => {
+/* signOut = () => {
   //set loggedIn to false
   this.props.signIn();
   SecureStore.deleteItemAsync('userToken');
   this.props.unsetToken();
   this.props.navigation.navigate('Auth');
-}
+} */
 
 componentDidMount() {
   this.getData();
@@ -44,7 +44,7 @@ getData = () => {
   const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
   const cmsHeader = { 
     'Content-Type': 'application/json', 
-    'Authorization': `Bearer ${this.props.userToken}` 
+    //'Authorization': `Bearer ${this.props.userToken}` 
   };
   axios.get(url, cmsHeader)
   .then( (res) => {
@@ -57,31 +57,9 @@ getData = () => {
     });
     productData = res;
     this.setState( {productData: res} );
-    console.log(productData);
     }
   )
   .catch((error) => console.log(error)); 
-  /* let productListData = [
-    {id: 0, product: 'Red Bull', price: 12, listImage: require('../assets/images/small/redbull-small.png'), bigImg: require('../assets/images/large/red-bull.png')},
-    {id: 1, product: 'Coca Cola Zero', price: 5, listImage: require('../assets/images/small/cola-zero-small.png'), bigImg: require('../assets/images/large/cola-zero-big.png')},
-    {id: 2, product: 'Coca Cola Classic', price: 5, listImage: require('../assets/images/small/cola-small.png'), bigImg: require('../assets/images/large/Cola-big.png')},
-    {id: 3, product: 'Faxe Kondi', price: 5, listImage: require('../assets/images/small/faxe-kondi-small.png'), bigImg: require('../assets/images/large/faxekondi-big.png')},
-    {id: 4, product: 'Pepsi Max', price: 5, listImage: require('../assets/images/small/pepsi-small.png'), bigImg: require('../assets/images/large/pepsi-big.png')},
-    {id: 5, product: 'Cocio Classic', price: 7, listImage: require('../assets/images/small/Cocio-Small.png'), bigImg: require('../assets/images/large/cocio-big.png')},
-    {id: 6, product: 'Lean Protein Shake', price: 20, listImage: require('../assets/images/small/Protein-small.png'), bigImg: require('../assets/images/large/protein-big.png')},
-    {id: 7, product: 'Lean Protein Shake Jordbær', price: 20, listImage: require('../assets/images/small/Protein-small.png'), bigImg: require('../assets/images/large/protein-big.png')},
-    {id: 8, product: 'Lean Protein Shake Vanilie', price: 20, listImage: require('../assets/images/small/Protein-small.png'), bigImg: require('../assets/images/large/protein-big.png')},
-    {id: 9, product: 'Lean Protein Shake ENERGY!', price: 20, listImage: require('../assets/images/small/Protein-small.png'), bigImg: require('../assets/images/large/protein-big.png')},
-  ];
-  productListData = productListData.map(item => {
-    item.isSelected =  false;
-    item.selectedImg = require('../assets/icons/list-checkmark.png');
-    item.selectedHighlight = productStyles.listContainer;
-    return item; 
-  });
-  this.setState({
-    productData: productListData,
-  }); */
 }
 
 setMultipleState = () => {
@@ -91,6 +69,7 @@ setMultipleState = () => {
 /*Function for selecting more than 1 different product to purchase. 
 Find index of the product and add a 'selected' style to it */
 selectItem = (data) => {
+  //toggle between isSelected true and false
   data.item.isSelected = !data.item.isSelected;
   data.item.selectedHighlight = data.item.isSelected ? productStyles.selectedStyle : productStyles.listContainer;
   const index = this.state.productData.findIndex(
@@ -101,16 +80,15 @@ selectItem = (data) => {
   if(data.item.isSelected === true) {
     this.state.selectedItems.push(data.item);
   } else {
-    this.state.selectedItems.splice(data.item, 1);
+    //find the index of the item selected.
+    const itemIndex = this.state.selectedItems.indexOf(data.item);
+    //remove the item from selected index.
+    this.state.selectedItems.splice(itemIndex, 1);
   }
   this.setState({
     productData: this.state.productData,
     selectedItems: this.state.selectedItems
   })
-  console.log("Produkt ID: " + this.state.productData[index].id);
-  console.log("Toggle isSelected: " + data.item.isSelected);
-  console.log("Pushed items to array: " + this.state.selectedItems);
-  console.log("first item: " + this.state.selectedItems[0].product);
 }
 
 renderList = data => {
@@ -120,7 +98,8 @@ renderList = data => {
         this.props.navigation.navigate('Purchase', {
           productName: data.item.title,
           productPrice: data.item.price,
-          promoImage: data.item.big_image.file_url
+          promoImage: data.item.big_image.file_url,
+          productId: data.item.id
         });
       } }> 
         <View style={productStyles.listContainer}>
@@ -161,20 +140,17 @@ renderList = data => {
             keyExtractor={ (productData) => productData.title} 
             data={this.state.productData}
             extraData={this.state}
-            renderItem={ item => this.renderList(item)}
+            renderItem={item => this.renderList(item)}
             />
             <View style={{marginTop: 15}}></View>
             { //Toggle the 'Next' button for multiple selection
               this.state.selectMultiple ? 
               <TouchableHighlight underlayColor='transparent' style={productStyles.nextBtn} activeOpacity={.3} onPress={ () => {
                 this.props.navigation.navigate('PurchaseMore', {
-                  productName: this.state.selectedItems[0].product,
-                  productPrice: this.state.selectedItems.price,
-                  promoImage: 'Billede',
                   productList: this.state.selectedItems
                 });
               } }> 
-              <Text style={{alignSelf: 'center', color: 'white'}}>NEXT</Text>
+              <Text style={{alignSelf: 'center', color: 'white'}}>NÆSTE</Text>
               </TouchableHighlight> : null
             }
         </View>
@@ -207,10 +183,6 @@ const productStyles = StyleSheet.create({
       marginTop: 5,
       marginBottom: 5,
       borderRadius: 10,
-      shadowColor: 'black',
-      shadowOffset: {width:1, height: 2},
-      shadowOpacity: .3,
-      shadowRadius: 5,
       justifyContent: 'space-between',
       alignSelf: 'center',
       width: '90%'

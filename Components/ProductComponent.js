@@ -1,15 +1,19 @@
 import { StyleSheet, Text, View, Button, Image, Modal, Animated, Easing, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-
-import ProcessModal from '../views/ProcessModal';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 class ProductComponent extends Component {
-    state = {
-        itemProduct: this.props.product,
-        itemAmount: 1,
-        itemPrice: this.props.itemPrice,
-    };
+    constructor(props) {
+        super(props);
+        this.state={
+            itemProduct: this.props.product,
+            itemAmount: 1,
+            itemPrice: this.props.itemPrice,
+            itemId: this.props.itemId
+        }
+    }
 
     addLess = () => {
         const decrease = this.state.itemAmount -= 1;
@@ -31,9 +35,31 @@ class ProductComponent extends Component {
         this.props.navigation.navigate('PaymentLoad', {
             productName: this.state.itemProduct,
             productAmount: this.state.itemAmount,
-            productPrice: this.state.itemPrice
+            productPrice: this.state.itemPrice,
+            itemId: this.state.itemId
         });
     }
+
+/*     testPurchase = () => {
+        const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchase';
+        const header = {
+            'Content-Type': 'application/json',
+            //'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJlbWFpbCI6ImFzc2xAaG91c2VvZmNvZGUuaW8iLCJuYW1lIjoiQW5kcsOpIiwiZXhwIjoxNTc3ODIyNjEwfQ.wBA_dQw65Hw8sGQq0Rf8QIONhWgCcH1KA1l1hvIU1Jk'
+        }
+        const data = {
+            items: [
+                {
+                    product_id: this.props.itemId,
+                    quantity: this.state.itemAmount
+                }
+            ]
+        }
+        //Using axios default headers because the header object will not be sent otherwise.
+        axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
+        axios.post(url,data,header)
+        .then(res => console.log(res.data))
+        .catch(error => console.log(error))
+    } */
 
     paymentStart = () => {
         Alert.alert(
@@ -41,6 +67,7 @@ class ProductComponent extends Component {
             `Køb ${this.state.itemAmount} ${this.props.product} for ${this.state.itemPrice} kroner?`,
             [
                 {text: 'Ja', onPress: this.confirmPurchase},
+                //{text: 'Ja', onPress: this.testPurchase},
                 {text: 'Anuller'}
             ],
         );
@@ -62,7 +89,7 @@ class ProductComponent extends Component {
                         <TouchableHighlight onPress={this.addLess} underlayColor='transparent' activeOpacity={.3} >
                             <Image source={require('../assets/icons/Minus.png')} />
                         </TouchableHighlight>
-                        <View style={styling.amountDisplayTwo}>
+                        <View style={styling.amountBox}>
                             <Text style={styling.amountDisplay }>{this.state.itemAmount}</Text>
                         </View>                       
                         <TouchableHighlight onPress={this.addMore} underlayColor='transparent' activeOpacity={.3} >
@@ -142,7 +169,7 @@ const styling = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center'
     },
-    amountDisplayTwo: {
+    amountBox: {
         borderStyle: 'solid',
         borderWidth: 2.5,
         borderColor: '#9CA0C3',
@@ -156,3 +183,12 @@ const styling = StyleSheet.create({
 });
 
 export default ProductComponent;
+
+/* const mapStateToProps = (state) => {
+    return {
+      loggedIn: state.loggedIn,
+      userToken: state.userToken
+    }
+  };
+
+export default connect(mapStateToProps)(ProductComponent); */

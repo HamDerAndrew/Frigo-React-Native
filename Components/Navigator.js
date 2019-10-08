@@ -29,7 +29,13 @@ const HomeStack = createStackNavigator(
       initialRouteName: 'AppMain',
         defaultNavigationOptions: {
           headerStyle: {
-            backgroundColor: '#EFF2F5'
+            backgroundColor: '#EFF2F5',
+            //iOS style for top nav bar START
+            shadowColor: 'black',
+            shadowOffset: {width:1, height: 2},
+            shadowOpacity: .3,
+            shadowRadius: 5,
+            //iOS style for top nav bar END
           },
           headerTintColor: '#001DD1',
           headerTitleStyle: {

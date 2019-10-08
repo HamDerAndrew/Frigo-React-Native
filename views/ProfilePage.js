@@ -20,12 +20,12 @@ class ProfilePage extends Component {
 
     render() {
         return(
-            <View style={{alignItems: 'center'}}>
-                <Text>Profile page</Text>
+            <View style={{flex:1, alignItems: 'center', justifyContent:'center'}}>
+                <Text>Profil side</Text>
                 <TouchableHighlight onPress={ this.signOut } style={{justifyContent: 'center', alignSelf: 'center', backgroundColor: '#0f1c6f', borderWidth: 1, borderColor: 'white', borderRadius: 70, padding: 15, width: 75, height: 75}}>
                     <Text style={{alignSelf: 'center', color: 'white'}}>Log u'</Text>
               </TouchableHighlight>
-              <Text>User token: {this.props.userToken}</Text>
+              {/* <Text>User token: {this.props.userToken}</Text> */}
             <View style={{marginBottom: 15}}></View>
             </View>
         );
