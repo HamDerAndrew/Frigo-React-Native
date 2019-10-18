@@ -1,4 +1,3 @@
-import { Platform } from 'react-native'
 import { createStackNavigator, createSwitchNavigator, createAppContainer, createBottomTabNavigator } from 'react-navigation';
 import MainPage from '../views/MainPage';
 import PurchasePage from '../views/PurchasePage';
@@ -8,12 +7,12 @@ import AuthLoadingPage from '../views/AuthLoadingPage';
 import LoginPage from '../views/LoginPage';
 import PurchaseMulPage from '../views/PurchaseMulPage';
 import PaymentLoadingPage from '../views/PaymentLoadingPage'
-import ProfilePage from '../views/ProfilePage';
+import CustomTabBar from '../Components/CustomTabBar';
 
 const HomeStack = createStackNavigator(
     {
         AppMain: {
-            screen: MainPage
+            screen: MainPage,
         },
         Purchase: {
             screen: PurchasePage,
@@ -27,23 +26,31 @@ const HomeStack = createStackNavigator(
     },
     {
       initialRouteName: 'AppMain',
-        defaultNavigationOptions: {
+      headerLayoutPreset: 'left',
+      defaultNavigationOptions: {
+          headerLeftContainerStyle: {
+            
+            //backgroundColor: 'green'
+          },
+          headerTitleContainerStyle: {
+            //backgroundColor: 'red',
+          },
+          headerTitleStyle: {
+            fontSize: 35,
+            //fontWeight needs to be a string of 200 in order to work on Android devices
+            fontWeight: '200',
+            //Set font to Roboto or custom font to fix a OnePlus device problem with displaying the page title.
+            fontFamily: 'nunitobold'
+          },
           headerStyle: {
+            height: 70,
             backgroundColor: '#EFF2F5',
-            //iOS style for top nav bar START
-            shadowColor: 'black',
-            shadowOffset: {width:1, height: 2},
-            shadowOpacity: .3,
-            shadowRadius: 5,
-            //iOS style for top nav bar END
+            //Remove bottom border on iOS nav header
+            borderBottomWidth: 0,
+            //Remove bottom border on Android nav header
+            elevation: 0,
           },
           headerTintColor: '#001DD1',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            //Set font to Roboto to fix a OnePlus problem with displaying the page title.
-            fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
-          },
-
         }
     }
 );
@@ -65,54 +72,42 @@ const HistoryStack = createStackNavigator(
     Historik: HistoryPage,
     },
     {
+      headerLayoutPreset: 'left',
       defaultNavigationOptions: {
         headerStyle: {
-          backgroundColor: '#EFF2F5'
+          backgroundColor: '#EFF2F5',
+          height: 70,
+           //Remove bottom border on iOS nav header
+          borderBottomWidth: 0,
+          //Remove bottom border on Android nav header
+          elevation: 0,
         },
         headerTintColor: '#001DD1',
         headerTitle: 'Historik',
         headerTitleStyle: {
-          fontWeight: 'bold',
-          fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
+          fontSize: 35,
+          //fontWeight needs to be a string of 200 in order to work on Android devices
+          fontWeight: '200',
+          fontFamily: 'nunitobold',
         },
       }
     }
   );
 
-  const ProfileStack = createStackNavigator(
-    {
-      Profil: ProfilePage
-    },
-    {
-      defaultNavigationOptions: {
-        headerStyle: {
-          backgroundColor: '#EFF2F5'
-        },
-        headerTintColor: '#001DD1',
-        headerTitle: 'Profil',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          fontFamily: Platform.OS === 'android' ? 'Roboto' : undefined 
-        },
-      }
-    }
-  )
+
 
   const TabNav = createBottomTabNavigator(
     {
         Produkter: HomeStack,
         Historik: HistoryStack,
-        Profil: ProfileStack
+        //Profil: ProfileStack
   
     },
     {
       initialRouteName: 'Produkter',
+      tabBarComponent: CustomTabBar,
       tabBarOptions: {
-        activeTintColor: 'white',
-        inactiveTintColor: '#0F1C6F',
-        activeBackgroundColor: '#173CD1',
         labelStyle: {
-          fontSize: 16,
           paddingBottom: 10
         }
       }
@@ -138,6 +133,6 @@ const HistoryStack = createStackNavigator(
           Auth: AuthStack,
       },
       {
-          initialRouteName: 'Auth'
+          initialRouteName: 'Auth',
       }
   ));

@@ -7,7 +7,8 @@ class PurchaseMulPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            totalPrice: 0
+            totalPrice: 0,
+            items: []
         }
     }
 
@@ -40,9 +41,6 @@ class PurchaseMulPage extends Component {
         //Parameters from MainPage navigation
         const { navigation } = this.props;
         const productList = navigation.getParam('productList', 'No list');
-
-        //console.log(productList);
-
         return(
             <View style={moreSelection.pageContainer}>
                 <FlatList data={productList} 

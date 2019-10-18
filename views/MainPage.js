@@ -21,19 +21,11 @@ constructor(props) {
 static navigationOptions = ({navigation}) => {
   return {
     title: 'Produkter',
-    headerRight: (
+    /* headerRight: (
       <SelectMultipleBtn onPress={navigation.getParam('selectionType')} />
-    ),
+    ), */
   }
 }
-
-/* signOut = () => {
-  //set loggedIn to false
-  this.props.signIn();
-  SecureStore.deleteItemAsync('userToken');
-  this.props.unsetToken();
-  this.props.navigation.navigate('Auth');
-} */
 
 componentDidMount() {
   this.getData();
@@ -135,7 +127,7 @@ renderList = data => {
   render() {
     return (
       <View style={productStyles.productWrapper}>
-        <View style={productStyles.productContainer}>
+
           <FlatList style={productStyles.flatList} 
             keyExtractor={ (productData) => productData.title} 
             data={this.state.productData}
@@ -153,7 +145,7 @@ renderList = data => {
               <Text style={{alignSelf: 'center', color: 'white'}}>NÆSTE</Text>
               </TouchableHighlight> : null
             }
-        </View>
+
       </View>
     );
   }
@@ -164,9 +156,6 @@ const productStyles = StyleSheet.create({
       flex: 1, 
       backgroundColor: '#EFF2F5'
   },
-  productContainer: {
-      flex: 1
-  },
   selectedStyle: {
     borderColor: '#173BD1',
     borderWidth: 1
@@ -176,13 +165,21 @@ const productStyles = StyleSheet.create({
   },
   listContainer: {
       flexDirection: 'row',
-      padding: 10,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 15,
+      paddingBottom: 15,
       backgroundColor: 'white',
       borderWidth: 1,
       borderColor: 'transparent',
-      marginTop: 5,
-      marginBottom: 5,
+      marginTop: 10,
+      marginBottom: 10,
       borderRadius: 10,
+      shadowColor: 'black',
+      shadowOffset: {width:1, height: 2},
+      shadowOpacity: .3,
+      shadowRadius: 5,
+      elevation: 5,
       justifyContent: 'space-between',
       alignSelf: 'center',
       width: '90%'
@@ -192,7 +189,8 @@ const productStyles = StyleSheet.create({
   },
   productItems: {
       paddingLeft: 10,
-      fontSize: 18
+      fontSize: 18,
+      fontFamily: 'nunitosemibold'
   },
   itemPrice: {
     fontSize: 12,

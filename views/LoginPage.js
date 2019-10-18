@@ -21,30 +21,10 @@ class LoginPage extends Component {
       loading: false,
       testImage: null
     };
-    this.getProducts();
-    //this.cacheImages();
+    this.getProducts()
   }
   static navigationOptions = {
     title: 'Log in',
-  }
-
-  componentDidMount = async () => {
-    const url = 'http://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/file/36';
-    const digest = await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, url);
-    console.log("HASHED: " + digest);
-    const path = `${FileSystem.cacheDirectory}${digest}`;
-    const myImage = await FileSystem.getInfoAsync(path);
-    console.log("PATH: " + path);
-    console.log("MYIMAGE: " + myImage);
-    if(myImage.exists) {
-      console.log("READ FROM CACHE");
-      this.setState({testImage: {uri: myImage.url}}
-        )
-        return
-    }
-    console.log("DOWNLOAD IMAGE");
-    const newImage = await FileSystem.downloadAsync(url, path);
-    this.setState({testImage: {uri: newImage.url}});
   }
 
   getProducts = () => {
@@ -57,40 +37,9 @@ class LoginPage extends Component {
     .then((res) => {
       const contentItems = res.data.data.products.items;
       this.props.setItems(contentItems);
-      console.log("contentItems: ", this.props.contentItems);
+      //console.log("contentItems: ", this.props.contentItems);
     })
     .catch(error => console.log(error))
-  }
-
-  cacheImages = () => {
-    const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
-    const cmsHeader = { 
-      'Content-Type': 'application/json', 
-      //'Authorization': `Bearer ${this.props.userToken}` 
-    };
-    axios.get(url, cmsHeader)
-    .then( (res) => {
-      //Create a variable which is the 'res' array of the items.
-      const imageArray = res.data.data.products.items;
-      //Loop over the array and find the small and large image to cache.
-      imageArray.forEach(element => {
-        //get URI of small image
-        const smallImage = element.list_image.file_url;
-        //get URI of large image
-        const largeImg = element.big_image.file_url;
-        //add small image to cache dir
-        const pathSmall = `${FileSystem.cacheDirectory}${smallImage}`;
-        //add large image to cache dir
-        const pathLarge = `${FileSystem.cacheDirectory}${largeImg}`;
-        console.log("Info about small img: " + pathSmall + " - size: " + pathLarge);
-        const getInfo = FileSystem.getInfoAsync(pathLarge);
-        console.log(getInfo);
-      });
-      //console.log("imgSmall: " + imgSmall + " - " + "imgLarge: " + imgLarge);
-      //console.log("Small path: " + pathSmall + " - Large path: " + pathLarge);
-      }
-    )
-    .catch((error) => console.log(error)); 
   }
 
   checkValid = () => {
@@ -110,7 +59,6 @@ class LoginPage extends Component {
       //set loggedIn to true
       this.props.signIn();
       this.props.navigation.navigate('AuthLoading');
-      //console.log('Response.data.token: ' + response.data.token);
     })
     .catch((error) => console.log('Error from server: ' + error));
     //this.props.navigation.navigate('Main');
@@ -121,7 +69,7 @@ class LoginPage extends Component {
             <View style={loginStyles.viewWrapper}>
                 <ImageBackground source={require('../assets/images/large/login.png')} style={{ width: '100%', height: '100%' }}>
                     <View style={loginStyles.headerContainer}>
-                        <Text style={loginStyles.headerTitle}>FRIGO</Text>
+                        <Text style={loginStyles.headerTitle}>Frigo</Text>
                     </View>
                     <View style={loginStyles.loginContainer}>
                         <View style={loginStyles.inputContainer}>
@@ -161,6 +109,7 @@ const loginStyles = StyleSheet.create({
   headerTitle: {
       fontSize: 35,
       color: 'white',
+      fontFamily: 'nunitobold'
   },
   inputContainer: {
       flex: 1,
@@ -193,7 +142,7 @@ const loginStyles = StyleSheet.create({
       alignSelf: 'center',
       color: 'white',
       fontSize: 22
-  }
+  },
 });
 
 const mapStateToProps = (state) => {

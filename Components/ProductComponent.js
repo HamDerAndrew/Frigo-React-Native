@@ -139,15 +139,17 @@ const styling = StyleSheet.create({
         paddingTop: 15, 
         fontSize: 25, 
         color: '#0F1C6F', 
-        fontWeight: 'bold'
+        fontFamily: 'nunitobold'
     },
     amount: {
         flexDirection: 'row',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontFamily: 'nunitosemibold',
+        color: '#636363'
     },
     amountContainer: {
         flex: 1, 
-        paddingTop: 20
+        paddingTop: 20,
     },
     payBtnContainer: {
         flex: .5
@@ -162,12 +164,15 @@ const styling = StyleSheet.create({
     payButtonText: {
         justifyContent: 'center',
         alignSelf: 'center',
-        color: 'white'
+        color: 'white',
+        fontFamily: 'nunitosemibold'
     },
     amountDisplay: {
         fontSize: 30,
         textAlign: 'center',
-        textAlignVertical: 'center'
+        textAlignVertical: 'center',
+        fontFamily: 'nunitosemibold',
+        color: '#101B6F'
     },
     amountBox: {
         borderStyle: 'solid',
