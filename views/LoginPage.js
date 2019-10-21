@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions, Platform } from "react-native";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import * as FileSystem from 'expo-file-system';
@@ -119,7 +119,7 @@ const loginStyles = StyleSheet.create({
   inputStyle: {
       backgroundColor: 'white',
       marginBottom: 15,
-      padding: 10,
+      padding: Platform.OS === 'android' ? 10 : 15,
       borderRadius: 10,
       alignSelf: 'stretch'
   },

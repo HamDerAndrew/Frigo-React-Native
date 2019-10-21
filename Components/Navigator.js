@@ -28,13 +28,6 @@ const HomeStack = createStackNavigator(
       initialRouteName: 'AppMain',
       headerLayoutPreset: 'left',
       defaultNavigationOptions: {
-          headerLeftContainerStyle: {
-            
-            //backgroundColor: 'green'
-          },
-          headerTitleContainerStyle: {
-            //backgroundColor: 'red',
-          },
           headerTitleStyle: {
             fontSize: 35,
             //fontWeight needs to be a string of 200 in order to work on Android devices
@@ -106,11 +99,6 @@ const HistoryStack = createStackNavigator(
     {
       initialRouteName: 'Produkter',
       tabBarComponent: CustomTabBar,
-      tabBarOptions: {
-        labelStyle: {
-          paddingBottom: 10
-        }
-      }
     },
   );
 

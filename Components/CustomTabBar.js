@@ -16,10 +16,6 @@ const S = StyleSheet.create({
   container: { 
     flexDirection: "row", 
     height: 70, 
-    elevation: 2,
-    shadowOffset: {width:1, height: 10},
-    shadowOpacity: 1,
-    shadowRadius: 15, 
   },
   tabButton: { 
     flex: 1, 

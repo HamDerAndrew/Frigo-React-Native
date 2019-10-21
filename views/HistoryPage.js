@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import HistoryComponent from '../Components/HistoryComponent';
 
 class HistoryPage extends Component {
     constructor(props) {
@@ -24,7 +23,8 @@ class HistoryPage extends Component {
         axios.get(url, cmsHeader)
         .then((res) => {
             const periods = res.data.periods;
-            this.setState({shopStory: periods})
+            const reversePeriods = periods.reverse();
+            this.setState({shopStory: reversePeriods})
         })
         .catch(error => console.log(error))
     }
@@ -58,12 +58,21 @@ class HistoryPage extends Component {
     }
 
     renderHistoryList = data => {
+        const theItems = {};
+        const findTitle = data.item.items.forEach(element => {
+            const itemId = element.content_item_id;
+            if(theItems.hasOwnProperty(itemId)) {
+                theItems[itemId] += 1;
+            } else {
+                theItems[itemId] = 1;
+            }
+        });
         return (
-            <View style={{backgroundColor: 'white', borderRadius: 10, width:'90%', alignSelf: 'center', marginTop: 10, marginBottom: 10, padding: 10}}>
-                <Text style={{fontSize: 18, color: '#0F1C6F'}}>PERIODE: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
-                {/* data.item.period.current ? <Text>nuværende</Text> : null */}
-                <Text style={{fontSize: 18, color: '#7C7C7C'}}>Total: {(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>
-                <FlatList style={{flex: 1}} 
+            <View style={historyStyle.periodContainer}>
+                <View style={{margin: 10}}>
+                    {data.item.period.current ? <Text style={{color: '#101B6F', fontSize: 18}}>Nuværende</Text> : null}
+                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Periode: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
+{/*                 <FlatList style={{flex: 1, borderWidth: 1, borderColor: 'black'}} 
                 data={data.item.items}
                 keyExtractor={ (item) => item.id.toString()}
                 extraData={data.item.items}
@@ -71,11 +80,15 @@ class HistoryPage extends Component {
                 <View style={{backgroundColor: 'white', flex: 1, padding: 5}}>
                     <Text>{this.reverseDate(item.created_at)}</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text>{this.getTitle(item.content_item_id)}</Text>
-                        <Text>{(parseFloat(item.price).toFixed(2) / 100)}kr.</Text>
+                        <Text style={{ color: '#031BD1', fontFamily: 'nunitoregular'}}>{this.getTitle(item.content_item_id)}</Text>
+                        <Text style={{ color: '#031BD1', fontFamily: 'nunitoregular'}}>{(parseFloat(item.price).toFixed(2) / 100)}kr.</Text>
                     </View>
                 </View>
-                } />
+                } /> */}
+                </View>
+                <View style={{backgroundColor: '#FAFBFB', paddingLeft: 10, paddingRight: 10, paddingBottom: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
+                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Total: {(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>
+                </View>
             </View>
         );
     }
@@ -85,7 +98,6 @@ class HistoryPage extends Component {
             <View style={{ flex: 1, backgroundColor: '#EFF2F5' }}>
             <FlatList style={{flex: 1}}
             data={this.state.shopStory}
-            initialNumToRender={1} 
             extraData={this.state.shopStory}
             keyExtractor={(shopStory) => shopStory.period.from}
             renderItem={item => this.renderHistoryList(item)}
@@ -94,6 +106,22 @@ class HistoryPage extends Component {
         );
     }
 }
+
+const historyStyle = StyleSheet.create({
+    periodContainer: {
+        backgroundColor: 'white', 
+        borderRadius: 10,
+        width:'90%', 
+        alignSelf: 'center', 
+        marginTop: 10, 
+        marginBottom: 10, 
+        shadowColor: 'black',
+        shadowOffset: {width:1, height: 2},
+        shadowOpacity: .3,
+        shadowRadius: 5,
+        elevation: 5,
+    }
+})
 
 const mapStateToProps = (state) => {
     return {

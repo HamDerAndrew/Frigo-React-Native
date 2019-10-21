@@ -51,7 +51,6 @@ class PaymentLoadingPage extends Component {
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
         axios.post(url,data,header)
         .then((response) => {
-            console.log(response.data)
             this.props.navigation.navigate('Payment', {
                 productName: productName,
                 productAmount: productAmount,

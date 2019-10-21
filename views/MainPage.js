@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import unsetToken from '../actions/UnsetToken';
 import axios from 'axios';
+import LogOutComponent from '../Components/LogOutComponent';
 
 class MainPage extends Component {
 constructor(props) {
@@ -24,12 +25,16 @@ static navigationOptions = ({navigation}) => {
     /* headerRight: (
       <SelectMultipleBtn onPress={navigation.getParam('selectionType')} />
     ), */
+    headerRight: (
+      <LogOutComponent onPress={navigation.getParam('logMeOut')} />
+    )
   }
 }
 
 componentDidMount() {
   this.getData();
-  this.props.navigation.setParams( {'selectionType': this.setMultipleState} )
+  //this.props.navigation.setParams( {'selectionType': this.setMultipleState} )
+  this.props.navigation.setParams( {'logMeOut': this.signOut} )
 }
 
 getData = () => {
@@ -56,6 +61,14 @@ getData = () => {
 
 setMultipleState = () => {
   this.setState({selectMultiple: !this.state.selectMultiple})
+}
+
+signOut = () => {
+  //set loggedIn to false
+  this.props.signIn();
+  SecureStore.deleteItemAsync('userToken');
+  this.props.unsetToken();
+  this.props.navigation.navigate('Auth');
 }
 
 /*Function for selecting more than 1 different product to purchase. 
@@ -127,14 +140,12 @@ renderList = data => {
   render() {
     return (
       <View style={productStyles.productWrapper}>
-
           <FlatList style={productStyles.flatList} 
             keyExtractor={ (productData) => productData.title} 
             data={this.state.productData}
             extraData={this.state}
             renderItem={item => this.renderList(item)}
             />
-            <View style={{marginTop: 15}}></View>
             { //Toggle the 'Next' button for multiple selection
               this.state.selectMultiple ? 
               <TouchableHighlight underlayColor='transparent' style={productStyles.nextBtn} activeOpacity={.3} onPress={ () => {
@@ -145,7 +156,6 @@ renderList = data => {
               <Text style={{alignSelf: 'center', color: 'white'}}>NÆSTE</Text>
               </TouchableHighlight> : null
             }
-
       </View>
     );
   }
@@ -154,14 +164,13 @@ renderList = data => {
 const productStyles = StyleSheet.create({
   productWrapper: {
       flex: 1, 
-      backgroundColor: '#EFF2F5'
   },
   selectedStyle: {
     borderColor: '#173BD1',
     borderWidth: 1
   },
   flatList: {
-      flex: 1
+    backgroundColor: '#EFF2F5'
   },
   listContainer: {
       flexDirection: 'row',

@@ -1,10 +1,10 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const CircularBtn = () => {
+const CircularBtn = (props) => {
     return(
-    <TouchableOpacity style={btnStyling.circleStyle}>
-        <Text style={{alignSelf: 'center', color: 'white'}}>NEXT</Text>
+    <TouchableOpacity style={btnStyling.circleStyle} onPress={props.onPress}>
+        <Text>log ud</Text>
     </TouchableOpacity> 
     );
 }
