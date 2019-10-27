@@ -10,6 +10,7 @@ class HistoryPage extends Component {
             shopStory: []
         };
         this.getShopHistory();
+        console.log(this.props.contentItems);
     }
 
     getShopHistory = () => {
@@ -50,41 +51,53 @@ class HistoryPage extends Component {
         find the id of the product in Redux Store.
         return the title of the product if it matches the id(content_item_id) in the purchase history(shopStory) 
         */
-        return content.find( (element) => {
-            if(content_item_id === element.id) {
+
+        const item = content.find( (element) => {
+            if(content_item_id === element.id.toString()) {
                 return true;
             }
-        }).title;
+        });
+
+        return !!item ? item.title : "N/A"
     }
 
     renderHistoryList = data => {
+        const itemObjectList = [];
+        const products = this.props.contentItems;
         const theItems = {};
-        const findTitle = data.item.items.forEach(element => {
+        data.item.items.forEach(element => {
             const itemId = element.content_item_id;
-            if(theItems.hasOwnProperty(itemId)) {
-                theItems[itemId] += 1;
+            const itemName = this.getTitle(itemId.toString());
+            const itemPrice = element.price;
+            //console.log(itemName);
+            if(theItems.hasOwnProperty(itemName)) {
+                theItems[itemName] += 1;
             } else {
-                theItems[itemId] = 1;
+                theItems[itemName] = 1;
             }
         });
+        itemObjectList.push(theItems);
+        //console.log(itemObjectList);
+        const mapListJs = itemObjectList.map(item =>
+            <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'column'}}>
+                    {Object.values(item).map(val =>
+                        <Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular'}}>{val}x </Text>    
+                    )}
+                </View>
+                <View style={{flexDirection: 'column'}}>
+                    {Object.getOwnPropertyNames(item).map( title =>
+                        (<Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular'}}>{title}</Text>)
+                    )}
+                    </View>
+            </View> 
+        );
         return (
             <View style={historyStyle.periodContainer}>
                 <View style={{margin: 10}}>
                     {data.item.period.current ? <Text style={{color: '#101B6F', fontSize: 18}}>Nuværende</Text> : null}
                     <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Periode: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
-{/*                 <FlatList style={{flex: 1, borderWidth: 1, borderColor: 'black'}} 
-                data={data.item.items}
-                keyExtractor={ (item) => item.id.toString()}
-                extraData={data.item.items}
-                renderItem={({item}) => 
-                <View style={{backgroundColor: 'white', flex: 1, padding: 5}}>
-                    <Text>{this.reverseDate(item.created_at)}</Text>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <Text style={{ color: '#031BD1', fontFamily: 'nunitoregular'}}>{this.getTitle(item.content_item_id)}</Text>
-                        <Text style={{ color: '#031BD1', fontFamily: 'nunitoregular'}}>{(parseFloat(item.price).toFixed(2) / 100)}kr.</Text>
-                    </View>
-                </View>
-                } /> */}
+                    {mapListJs}
                 </View>
                 <View style={{backgroundColor: '#FAFBFB', paddingLeft: 10, paddingRight: 10, paddingBottom: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
                     <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Total: {(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>

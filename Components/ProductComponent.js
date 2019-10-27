@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Platform } from '@unimodules/core';
 
 class ProductComponent extends Component {
     constructor(props) {
@@ -169,10 +170,10 @@ const styling = StyleSheet.create({
     },
     amountDisplay: {
         fontSize: 30,
-        textAlign: 'center',
-        textAlignVertical: 'center',
         fontFamily: 'nunitosemibold',
-        color: '#101B6F'
+        color: '#101B6F',
+        alignSelf: 'center',
+        marginBottom: Platform.OS === 'android' ? 5 : 0
     },
     amountBox: {
         borderStyle: 'solid',
@@ -180,9 +181,11 @@ const styling = StyleSheet.create({
         borderColor: '#9CA0C3',
         marginLeft: 25,
         marginRight: 25,
-        paddingLeft: 15,
-        paddingRight: 15,
         backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 50,
+        lineHeight: Platform.OS === 'ios' ? 30: undefined,
         borderRadius: 10,
     }
 });
