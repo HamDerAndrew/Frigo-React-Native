@@ -9,8 +9,11 @@ class HistoryPage extends Component {
         this.state = {
             shopStory: []
         };
-        this.getShopHistory();
         //console.log(this.props.contentItems);
+    }
+
+    componentDidMount() {
+        this.getShopHistory();
     }
 
     getShopHistory = () => {
@@ -74,15 +77,17 @@ class HistoryPage extends Component {
             }
         });
         itemObjectList.push(theItems);
-        //console.log(itemObjectList);
+
         const mapListJs = itemObjectList.map((item, index) =>
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}} key={index}>
 
                 <View style={{flexDirection: 'row'}}>
                     <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
-                        {Object.values(item).map((val, index) =>
-                            <Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{val}x </Text>    
-                        )}
+                        {Object.values(item).map((amount, index) => {
+                            return (
+                            <Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{amount}x </Text>
+                            )    
+                        })}
                     </View>
                     <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
                         {Object.getOwnPropertyNames(item).map( (title, index) =>
@@ -92,15 +97,32 @@ class HistoryPage extends Component {
                 </View>
 
                 <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
-                    {Object.getOwnPropertyNames(item).map( (title, index) => {
+                    {Object.entries(item).map(([key, value], index) => {
+                            //console.log(key, value);
+                            let productPrice = 0;
+                            products.map((product) => {
+                                if(product.title === key) {
+                                    productPrice = product.price * value;
+                                    //console.log(Possible);
+                                }
+                            });
+                            return (<Text style={{fontSize: 16, color: '#031BD1', textAlign: 'right', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{(parseFloat(productPrice).toFixed(2) / 100)} kr.</Text>)
+                        })}
+                    {/* Object.getOwnPropertyNames(item).map( (title, index) => {
+                        //console.log( Object.entries(item))
                         let productPrice = 0;
+                        let totalSum = 0;
                         products.map( (product) => {
                             if(product.title === title) {
-                                return productPrice = product.price;
+                                productPrice = product.price;
                             }
                         })
-                        return (<Text style={{fontSize: 16, color: '#031BD1', textAlign: 'right', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{(parseFloat(productPrice).toFixed(2) / 100)} kr.</Text>)
-                    })}
+                        Object.values(item).map(totalAmount => {
+                            //console.log("totalAmount:", totalAmount)
+                            return totalSum += totalAmount;
+                        })
+                        return (<Text style={{fontSize: 16, color: '#031BD1', textAlign: 'right', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{(parseFloat().toFixed(2) / 100)} kr.</Text>)
+                    }) */}
                 </View>
 
             </View> 
@@ -112,24 +134,33 @@ class HistoryPage extends Component {
                     <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Periode: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
                     {mapListJs}
                 </View>
-                <View style={{backgroundColor: '#FAFBFB', paddingLeft: 10, paddingRight: 10, paddingBottom: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
-                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Total: {(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>
+                <View style={{backgroundColor: '#FAFBFB', flexDirection:'row', justifyContent:'space-around', paddingLeft: 10, paddingRight: 10, paddingBottom: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
+                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>TOTAL</Text>
+                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>{(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>
                 </View>
             </View>
         );
     }
 
     render() {
-        return (
-            <View style={{ flex: 1, backgroundColor: '#EFF2F5' }}>
-            <FlatList style={{flex: 1}}
-            data={this.state.shopStory}
-            extraData={this.state.shopStory}
-            keyExtractor={(shopStory) => shopStory.period.from}
-            renderItem={item => this.renderHistoryList(item)}
-            />
-            </View>
-        );
+        if(this.state.shopStory.length <= 0) {
+            return(
+                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <Text style={{fontFamily: 'nunitoregular'}}>Ingen køb foretaget.</Text>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{ flex: 1, backgroundColor: '#EFF2F5' }}>
+                <FlatList style={{flex: 1}}
+                data={this.state.shopStory}
+                extraData={this.state.shopStory}
+                keyExtractor={(shopStory) => shopStory.period.from}
+                renderItem={item => this.renderHistoryList(item)}
+                />
+                </View>
+            );
+        }
     }
 }
 
