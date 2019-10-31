@@ -37,7 +37,6 @@ class PaymentLoadingPage extends Component {
         const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchase';
         const header = {
             'Content-Type': 'application/json',
-            //'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJlbWFpbCI6ImFzc2xAaG91c2VvZmNvZGUuaW8iLCJuYW1lIjoiQW5kcsOpIiwiZXhwIjoxNTc3ODIyNjEwfQ.wBA_dQw65Hw8sGQq0Rf8QIONhWgCcH1KA1l1hvIU1Jk'
         }
         const data = {
             items: [

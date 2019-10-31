@@ -10,14 +10,13 @@ class HistoryPage extends Component {
             shopStory: []
         };
         this.getShopHistory();
-        console.log(this.props.contentItems);
+        //console.log(this.props.contentItems);
     }
 
     getShopHistory = () => {
         const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchases';
         const cmsHeader = { 
             'Content-Type': 'application/json', 
-            //'Authorization': `Bearer ${this.props.userToken}` 
           };
         //Using axios default headers because the header object will not be sent otherwise(bug?).
         axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
@@ -51,7 +50,6 @@ class HistoryPage extends Component {
         find the id of the product in Redux Store.
         return the title of the product if it matches the id(content_item_id) in the purchase history(shopStory) 
         */
-
         const item = content.find( (element) => {
             if(content_item_id === element.id.toString()) {
                 return true;
@@ -68,8 +66,7 @@ class HistoryPage extends Component {
         data.item.items.forEach(element => {
             const itemId = element.content_item_id;
             const itemName = this.getTitle(itemId.toString());
-            const itemPrice = element.price;
-            //console.log(itemName);
+
             if(theItems.hasOwnProperty(itemName)) {
                 theItems[itemName] += 1;
             } else {
@@ -78,18 +75,34 @@ class HistoryPage extends Component {
         });
         itemObjectList.push(theItems);
         //console.log(itemObjectList);
-        const mapListJs = itemObjectList.map(item =>
-            <View style={{flexDirection: 'row'}}>
-                <View style={{flexDirection: 'column'}}>
-                    {Object.values(item).map(val =>
-                        <Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular'}}>{val}x </Text>    
-                    )}
-                </View>
-                <View style={{flexDirection: 'column'}}>
-                    {Object.getOwnPropertyNames(item).map( title =>
-                        (<Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular'}}>{title}</Text>)
-                    )}
+        const mapListJs = itemObjectList.map((item, index) =>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}} key={index}>
+
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
+                        {Object.values(item).map((val, index) =>
+                            <Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{val}x </Text>    
+                        )}
                     </View>
+                    <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
+                        {Object.getOwnPropertyNames(item).map( (title, index) =>
+                            (<Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{title}</Text>)
+                        )}
+                    </View>
+                </View>
+
+                <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
+                    {Object.getOwnPropertyNames(item).map( (title, index) => {
+                        let productPrice = 0;
+                        products.map( (product) => {
+                            if(product.title === title) {
+                                return productPrice = product.price;
+                            }
+                        })
+                        return (<Text style={{fontSize: 16, color: '#031BD1', textAlign: 'right', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{(parseFloat(productPrice).toFixed(2) / 100)} kr.</Text>)
+                    })}
+                </View>
+
             </View> 
         );
         return (
