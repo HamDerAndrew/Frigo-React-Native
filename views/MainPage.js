@@ -41,7 +41,6 @@ getData = () => {
   const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
   const cmsHeader = { 
     'Content-Type': 'application/json', 
-    //'Authorization': `Bearer ${this.props.userToken}` 
   };
   axios.get(url, cmsHeader)
   .then( (res) => {

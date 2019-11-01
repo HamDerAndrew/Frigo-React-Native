@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -7,9 +7,9 @@ class HistoryPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            shopStory: []
+            shopStory: [],
+            loading: true
         };
-        //console.log(this.props.contentItems);
     }
 
     componentDidMount() {
@@ -27,9 +27,12 @@ class HistoryPage extends Component {
         .then((res) => {
             const periods = res.data.periods;
             const reversePeriods = periods.reverse();
-            this.setState({shopStory: reversePeriods})
+            this.setState({shopStory: reversePeriods, loading: false})
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+            this.setState({loading: false})
+            console.log(error);
+        });
     }
 
     reverseDate = (dateInput) => {
@@ -79,85 +82,74 @@ class HistoryPage extends Component {
         itemObjectList.push(theItems);
 
         const mapListJs = itemObjectList.map((item, index) =>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between'}} key={index}>
-
-                <View style={{flexDirection: 'row'}}>
-                    <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
+            <View style={historyStyle.receiptBodyOuter} key={index}>
+                <View style={historyStyle.receiptLeftContainer}>
+                    <View style={historyStyle.receiptBodyInner}>
                         {Object.values(item).map((amount, index) => {
                             return (
-                            <Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{amount}x </Text>
+                            <Text style={historyStyle.regularText} key={index}>{amount}x </Text>
                             )    
                         })}
                     </View>
-                    <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
+                    <View style={historyStyle.receiptBodyInner}>
                         {Object.getOwnPropertyNames(item).map( (title, index) =>
-                            (<Text style={{fontSize: 16, color: '#031BD1', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{title}</Text>)
+                            (<Text style={historyStyle.regularText} key={index}>{title}</Text>)
                         )}
                     </View>
                 </View>
-
-                <View style={{flexDirection: 'column', marginTop: 5, marginBottom: 5}}>
+                <View style={historyStyle.receiptBodyInner}>
                     {Object.entries(item).map(([key, value], index) => {
-                            //console.log(key, value);
                             let productPrice = 0;
                             products.map((product) => {
                                 if(product.title === key) {
                                     productPrice = product.price * value;
-                                    //console.log(Possible);
                                 }
                             });
-                            return (<Text style={{fontSize: 16, color: '#031BD1', textAlign: 'right', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{(parseFloat(productPrice).toFixed(2) / 100)} kr.</Text>)
+                            return (<Text style={[historyStyle.regularText, {textAlign: 'right'}]} key={index}>{(parseFloat(productPrice).toFixed(2) / 100)} kr.</Text>)
                         })}
-                    {/* Object.getOwnPropertyNames(item).map( (title, index) => {
-                        //console.log( Object.entries(item))
-                        let productPrice = 0;
-                        let totalSum = 0;
-                        products.map( (product) => {
-                            if(product.title === title) {
-                                productPrice = product.price;
-                            }
-                        })
-                        Object.values(item).map(totalAmount => {
-                            //console.log("totalAmount:", totalAmount)
-                            return totalSum += totalAmount;
-                        })
-                        return (<Text style={{fontSize: 16, color: '#031BD1', textAlign: 'right', fontFamily: 'nunitoregular', marginTop: 5, marginBottom: 5}} key={index}>{(parseFloat().toFixed(2) / 100)} kr.</Text>)
-                    }) */}
                 </View>
-
             </View> 
         );
+
         return (
             <View style={historyStyle.periodContainer}>
                 <View style={{margin: 10}}>
-                    {data.item.period.current ? <Text style={{color: '#101B6F', fontSize: 18}}>Nuværende</Text> : null}
-                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>Periode: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
+                    {data.item.period.current ? <Text style={historyStyle.boldText}>Nuværende</Text> : null}
+                    <Text style={historyStyle.receiptHeader}>Periode: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
                     {mapListJs}
                 </View>
-                <View style={{backgroundColor: '#FAFBFB', flexDirection:'row', justifyContent:'space-around', paddingLeft: 10, paddingRight: 10, paddingBottom: 5, borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
-                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>TOTAL</Text>
-                    <Text style={{fontSize: 18, color: '#101B6F', fontFamily: 'nunitobold'}}>{(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>
+                <View style={historyStyle.receiptFooter}>
+                    <Text style={historyStyle.boldText}>TOTAL</Text>
+                    <Text style={historyStyle.boldText}>{(parseFloat(data.item.sum).toFixed(2) / 100)}kr.</Text>
                 </View>
             </View>
         );
     }
 
+    
     render() {
+        if(this.state.loading === true) {
+            return (
+                <View style={historyStyle.noDataPage}>
+                    <ActivityIndicator size="large" />
+                </View>
+            )
+        }
         if(this.state.shopStory.length <= 0) {
             return(
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <Text style={{fontFamily: 'nunitoregular'}}>Ingen køb foretaget.</Text>
+                <View style={history.noDataPage}>
+                    <Text style={historyStyle.regularText}>Ingen køb foretaget.</Text>
                 </View>
             );
         } else {
             return (
-                <View style={{ flex: 1, backgroundColor: '#EFF2F5' }}>
-                <FlatList style={{flex: 1}}
-                data={this.state.shopStory}
-                extraData={this.state.shopStory}
-                keyExtractor={(shopStory) => shopStory.period.from}
-                renderItem={item => this.renderHistoryList(item)}
-                />
+                <View style={historyStyle.container}>
+                    <FlatList style={historyStyle.historyList}
+                    data={this.state.shopStory}
+                    extraData={this.state.shopStory}
+                    keyExtractor={(shopStory) => shopStory.period.from}
+                    renderItem={item => this.renderHistoryList(item)}
+                    />
                 </View>
             );
         }
@@ -165,6 +157,19 @@ class HistoryPage extends Component {
 }
 
 const historyStyle = StyleSheet.create({
+    container: {
+        flex: 1, 
+        backgroundColor: '#EFF2F5'
+    },
+    noDataPage: {
+        flex: 1, 
+        backgroundColor: '#EFF2F5', 
+        alignContent: 'center', 
+        justifyContent: 'center'
+    },
+    historyList: {
+        flex: 1
+    },
     periodContainer: {
         backgroundColor: 'white', 
         borderRadius: 10,
@@ -177,6 +182,48 @@ const historyStyle = StyleSheet.create({
         shadowOpacity: .3,
         shadowRadius: 5,
         elevation: 5,
+    },
+    receiptHeader: {
+        fontSize: 18, 
+        color: '#101B6F', 
+        fontFamily: 'nunitobold', 
+        paddingTop: 15, 
+        paddingBottom: 5
+    },
+    receiptBodyOuter: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between'
+    },
+    receiptLeftContainer: {
+        flexDirection: 'row', 
+    },
+    receiptBodyInner: {
+        flexDirection: 'column', 
+        marginTop: 5, 
+        marginBottom: 5
+    },
+    receiptFooter: {
+        backgroundColor: '#FAFBFB', 
+        flexDirection:'row', 
+        justifyContent:'space-between', 
+        paddingLeft: 10, 
+        paddingRight: 10, 
+        paddingBottom: 15, 
+        paddingTop: 15, 
+        borderBottomLeftRadius: 10, 
+        borderBottomRightRadius: 10
+    },
+    boldText: {
+        fontSize: 18, 
+        color: '#101B6F', 
+        fontFamily: 'nunitobold'
+    },
+    regularText: {
+        fontSize: 16, 
+        color: '#031BD1', 
+        fontFamily: 'nunitoregular', 
+        marginTop: 5, 
+        marginBottom: 5
     }
 })
 

@@ -9,7 +9,7 @@ class PaymentLoadingPage extends Component {
         super(props);
 
         //this.checkPayment();
-        this.testPurchase();
+        this.purchaseProduct();
     }
 
 /*     checkPayment = () => {
@@ -27,7 +27,7 @@ class PaymentLoadingPage extends Component {
         }, 3000);
     } */
 
-    testPurchase = () => {
+    purchaseProduct = () => {
         const { navigation } = this.props;
         const productName = navigation.getParam('productName', 'NO-PRODUCT');
         const productAmount = navigation.getParam('productAmount', 'NO-AMOUNT');
@@ -75,7 +75,5 @@ const mapStateToProps = (state) => {
       userToken: state.userToken
     }
   };
-
-//export default PaymentLoadingPage;
 
 export default connect(mapStateToProps)(PaymentLoadingPage);

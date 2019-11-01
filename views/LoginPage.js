@@ -15,11 +15,8 @@ class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'assl@houseofcode.io',
-      password: 'AndrewTestHOC',
-      error: '',
-      loading: false,
-      testImage: null
+      email: '',
+      password: '',
     };
     this.getProducts()
   }
@@ -37,7 +34,6 @@ class LoginPage extends Component {
     .then((res) => {
       const contentItems = res.data.data.products.items;
       this.props.setItems(contentItems);
-      //console.log("contentItems: ", this.props.contentItems);
     })
     .catch(error => console.log(error))
   }
@@ -61,7 +57,6 @@ class LoginPage extends Component {
       this.props.navigation.navigate('AuthLoading');
     })
     .catch((error) => console.log('Error from server: ' + error));
-    //this.props.navigation.navigate('Main');
   }
 
     render() {
@@ -130,7 +125,6 @@ const loginStyles = StyleSheet.create({
       paddingBottom: 40
   },
   loginBtn: {
-      //backgroundColor: '#173BD1',
       backgroundColor: '#0F1C6F',
       borderRadius: 35,
       padding: 20,
