@@ -8,28 +8,6 @@ const tabWidth = windowWidth / 2;
 const SpotLight = posed.View({
   route0: { x: 0 },
   route1: { x: tabWidth },
-  route2: { x: tabWidth * 2 },
-  route3: { x: tabWidth * 3 },
-});
-
-const S = StyleSheet.create({
-  container: { 
-    flexDirection: "row", 
-    height: 70, 
-  },
-  tabButton: { 
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center" 
-  },
-  activeC: {
-    color: 'white',
-    fontSize: 18
-  },
-  inactiveC: {
-    color: 'black',
-    fontSize: 18
-  }
 });
 
 const TabBar = props => {
@@ -94,5 +72,26 @@ const TabBar = props => {
   </View>
   );
 };
+
+const S = StyleSheet.create({
+  container: { 
+    flexDirection: "row", 
+    height: 70, 
+    backgroundColor: 'white'
+  },
+  tabButton: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center" 
+  },
+  activeC: {
+    color: 'white',
+    fontSize: 18
+  },
+  inactiveC: {
+    color: 'black',
+    fontSize: 18
+  }
+});
 
 export default TabBar;

@@ -1,4 +1,9 @@
 #! /usr/bin/env bash
+
+#### 2. Script Setup ####
+# It's useful to exit the bash script when a command exits with a non-zero status
+# as the following commands must be run successfully in sequence for expected results.
+
 set -e # exit entire script when command exits with non-zero status
 
 # Install dependencies

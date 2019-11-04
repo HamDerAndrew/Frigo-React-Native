@@ -56,7 +56,10 @@ class LoginPage extends Component {
       this.props.signIn();
       this.props.navigation.navigate('AuthLoading');
     })
-    .catch((error) => console.log('Error from server: ' + error));
+    .catch((error) => {
+      console.log('Error from server: ' + error)
+      alert("Forkert brugernavn og/eller password");
+    });
   }
 
     render() {
