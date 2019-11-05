@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icons/icon@2x.png",
+    "icon": "./assets/icons/frigoicon",
     "splash": {
       "image": "./assets/images/splashscreen/splash.png",
       "resizeMode": "cover",
