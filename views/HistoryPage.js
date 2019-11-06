@@ -8,7 +8,7 @@ class HistoryPage extends Component {
         super(props)
         this.state = {
             shopStory: [],
-            loading: true
+            //loading: true
         };
     }
 
@@ -27,10 +27,9 @@ class HistoryPage extends Component {
         .then((res) => {
             const periods = res.data.periods;
             const reversePeriods = periods.reverse();
-            this.setState({shopStory: reversePeriods, loading: false})
+            this.setState({shopStory: reversePeriods})
         })
         .catch(error => {
-            this.setState({loading: false})
             console.log(error);
         });
     }
@@ -128,13 +127,13 @@ class HistoryPage extends Component {
 
     
     render() {
-        if(this.state.loading === true) {
+/*         if(this.state.loading === true) {
             return (
                 <View style={historyStyle.noDataPage}>
                     <ActivityIndicator size="large" />
                 </View>
             )
-        }
+        } */
         if(this.state.shopStory.length <= 0) {
             return(
                 <View style={history.noDataPage}>
