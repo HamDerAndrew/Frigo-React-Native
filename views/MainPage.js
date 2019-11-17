@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
 import SelectMultipleBtn from '../Components/SelectMultipleBtn';
-import signIn from '../actions/SignIn';
+import signIn from '../redux/actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
-import unsetToken from '../actions/UnsetToken';
+import unsetToken from '../redux/actions/UnsetToken';
 import axios from 'axios';
 import LogOutComponent from '../Components/LogOutComponent';
 

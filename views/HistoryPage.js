@@ -8,12 +8,13 @@ class HistoryPage extends Component {
         super(props)
         this.state = {
             shopStory: [],
-            //loading: true
+           
         };
     }
 
     componentDidMount() {
         this.getShopHistory();
+        
     }
 
     getShopHistory = () => {
@@ -127,20 +128,6 @@ class HistoryPage extends Component {
 
     
     render() {
-/*         if(this.state.loading === true) {
-            return (
-                <View style={historyStyle.noDataPage}>
-                    <ActivityIndicator size="large" />
-                </View>
-            )
-        } */
-        if(this.state.shopStory.length <= 0) {
-            return(
-                <View style={history.noDataPage}>
-                    <Text style={historyStyle.regularText}>Ingen køb foretaget.</Text>
-                </View>
-            );
-        } else {
             return (
                 <View style={historyStyle.container}>
                     <FlatList style={historyStyle.historyList}
@@ -151,7 +138,6 @@ class HistoryPage extends Component {
                     />
                 </View>
             );
-        }
     }
 }
 

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, StyleSheet, TextInput, Dimensions, Platform } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, TextInput, Switch, Dimensions, Platform } from "react-native";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
-import setUserToken from '../actions/SetUserToken';
+import setUserToken from '../redux/actions/SetUserToken';
 import { connect } from 'react-redux';
-import signIn from '../actions/SignIn';
-import setItems from '../actions/SetItems';
+import signIn from '../redux/actions/SignIn';
+import setItems from '../redux/actions/SetItems';
 import * as Crypto from 'expo-crypto';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 class LoginPage extends Component {
@@ -17,12 +18,63 @@ class LoginPage extends Component {
     this.state = {
       email: '',
       password: '',
+      rememberMe: false
     };
     this.getProducts()
   }
   static navigationOptions = {
     title: 'Log in',
   }
+
+
+storeUser = async () => {
+  try {
+    await AsyncStorage.setItem('user', this.state.email);
+    await AsyncStorage.setItem('pass', this.state.password);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+getUser = async () => {
+  try {
+    const userEmail = await AsyncStorage.getItem('user');
+    const userPass = await AsyncStorage.getItem('pass');
+    
+    if(userEmail !== null && userPass !== null) {
+      this.setState({email: userEmail, password: userPass})
+    }
+    console.log("getUser: ", userEmail, " - ", userPass);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+forgetUser = async () => {
+  try {
+    await AsyncStorage.removeItem('user');
+    await AsyncStorage.removeItem('pass');
+  } catch(error) {
+    console.log(error)
+  }
+}
+
+toggleRememberMe = value => {
+  this.setState({rememberMe: value})
+  if (value === true) {
+    this.storeUser();
+  } else {
+    this.forgetUser();
+  }
+}
+
+async componentDidMount() {
+  const userInfo = await this.getUser();
+  
+  this.setState({
+    rememberMe: userInfo ? true : false
+  })
+}
 
   getProducts = () => {
     const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
@@ -73,6 +125,8 @@ class LoginPage extends Component {
                         <View style={loginStyles.inputContainer}>
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
+                            <Switch style={loginStyles.toggleBox} value={this.state.rememberMe}  onValueChange={(value) => this.toggleRememberMe(value)} />
+                            <Text style={loginStyles.rememberText}>Husk mig</Text>
                         </View>
                     </View>
                     <View style={loginStyles.loginBtnContainer}>
@@ -120,6 +174,16 @@ const loginStyles = StyleSheet.create({
       padding: Platform.OS === 'android' ? 10 : 15,
       borderRadius: 10,
       alignSelf: 'stretch'
+  },
+  toggleBox: {
+    alignSelf: 'center'
+  },
+  rememberText: {
+    alignSelf: 'center',
+    paddingTop: 10,
+    fontSize: 16, 
+    color: 'white', 
+    fontFamily: 'nunitobold', 
   },
   loginBtnContainer: {
       flex: .5, 
