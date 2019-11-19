@@ -19,8 +19,8 @@ class ProductComponent extends Component {
     addLess = () => {
         const decrease = this.state.itemAmount -= 1;
         const totalPrice = decrease * this.props.itemPrice;
-        if (this.state.itemAmount <= 0 ) {
-            this.setState( {itemAmount: 0, itemPrice: 0} )
+        if (this.state.itemAmount <= 1 ) {
+            this.setState( {itemAmount: 1, itemPrice: this.props.itemPrice} )
         } else {
             this.setState( {itemAmount: decrease, itemPrice: totalPrice});
         }

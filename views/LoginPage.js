@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, ImageBackground, StyleSheet, TextInput, Switch, Dimensions, Platform } from "react-native";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
-import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import setUserToken from '../redux/actions/SetUserToken';
 import { connect } from 'react-redux';
 import signIn from '../redux/actions/SignIn';
 import setItems from '../redux/actions/SetItems';
-import * as Crypto from 'expo-crypto';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -26,54 +24,15 @@ class LoginPage extends Component {
     title: 'Log in',
   }
 
-
-storeUser = async () => {
-  try {
-    await AsyncStorage.setItem('user', this.state.email);
-    await AsyncStorage.setItem('pass', this.state.password);
-  } catch(error) {
-    console.log(error);
-  }
-}
-
-getUser = async () => {
-  try {
-    const userEmail = await AsyncStorage.getItem('user');
-    const userPass = await AsyncStorage.getItem('pass');
-    
-    if(userEmail !== null && userPass !== null) {
-      this.setState({email: userEmail, password: userPass})
-    }
-    console.log("getUser: ", userEmail, " - ", userPass);
-  } catch(error) {
-    console.log(error);
-  }
-}
-
-forgetUser = async () => {
-  try {
-    await AsyncStorage.removeItem('user');
-    await AsyncStorage.removeItem('pass');
-  } catch(error) {
-    console.log(error)
-  }
-}
-
-toggleRememberMe = value => {
-  this.setState({rememberMe: value})
-  if (value === true) {
-    this.storeUser();
-  } else {
-    this.forgetUser();
+tokenExists = async () => {
+  const token = await SecureStore.getItemAsync('userToken');
+  if(token) {
+    this.props.navigation.navigate('AuthLoading');
   }
 }
 
 async componentDidMount() {
-  const userInfo = await this.getUser();
-  
-  this.setState({
-    rememberMe: userInfo ? true : false
-  })
+  this.tokenExists();
 }
 
   getProducts = () => {
@@ -123,10 +82,8 @@ async componentDidMount() {
                     </View>
                     <View style={loginStyles.loginContainer}>
                         <View style={loginStyles.inputContainer}>
-                            <TextInput style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
+                            <TextInput keyboardType={"email-address"} style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
                             <TextInput style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
-                            <Switch style={loginStyles.toggleBox} value={this.state.rememberMe}  onValueChange={(value) => this.toggleRememberMe(value)} />
-                            <Text style={loginStyles.rememberText}>Husk mig</Text>
                         </View>
                     </View>
                     <View style={loginStyles.loginBtnContainer}>

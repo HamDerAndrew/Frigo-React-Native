@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, Animated, StyleSheet } from 'react-native';
+import { View, Text, Modal, Animated, StyleSheet, Button } from 'react-native';
 
 class ProcessIndicator extends Component {
     constructor(props) {
@@ -43,7 +43,7 @@ class ProcessIndicator extends Component {
                     <Animated.Image source={ require('../assets/icons/process1.png') } style={[modalStyle.animatedImg, animationStyle]} resizeMode={'contain'} />
                     <View style={modalStyle.processContainer}>
                         <Text  style={modalStyle.processTxt}>Processing...</Text>
-                        {/* <Button color="red" title="Luk modal" onPress={this.props.closeModal} /> */}
+                        <Button color="red" title="Luk modal" onPress={this.props.closeModal} />
                     </View>
                 </View>
             </Modal>

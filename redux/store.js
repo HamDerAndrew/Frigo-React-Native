@@ -25,9 +25,3 @@ export const store = createStore(
  );
 
 export const persistor = persistStore(store);
- 
-/* export default () => {
-  let store = createStore(persistedReducer, applyMiddleware(logger));
-  let persistor = persistStore(store);
-  return { store, persistor }
-} */

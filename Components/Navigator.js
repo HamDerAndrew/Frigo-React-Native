@@ -23,6 +23,9 @@ const HomeStack = createStackNavigator(
         Payment: {
             screen: ProcessModal,
         },
+        PaymentLoad: {
+          screen: PaymentLoadingPage
+        },
     },
     {
       initialRouteName: 'AppMain',
@@ -105,7 +108,6 @@ const HistoryStack = createStackNavigator(
   const AuthStack = createStackNavigator(
     {
         SignIn: LoginPage,
-        PaymentLoad: PaymentLoadingPage,
     },
     {
       defaultNavigationOptions: {
@@ -121,6 +123,6 @@ const HistoryStack = createStackNavigator(
           Auth: AuthStack,
       },
       {
-          initialRouteName: 'Auth',
+          initialRouteName: 'AuthLoading',
       }
   ));

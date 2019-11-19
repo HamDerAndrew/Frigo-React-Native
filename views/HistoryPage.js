@@ -8,13 +8,19 @@ class HistoryPage extends Component {
         super(props)
         this.state = {
             shopStory: [],
-           
+            refreshing: false,
+            count: 0
         };
     }
 
     componentDidMount() {
         this.getShopHistory();
-        
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+            // get your new data here and then set state it will rerender
+            this.getShopHistory();
+            console.log("Data")
+            });
+        console.log("HistoryPage did Mount")
     }
 
     getShopHistory = () => {
@@ -28,7 +34,7 @@ class HistoryPage extends Component {
         .then((res) => {
             const periods = res.data.periods;
             const reversePeriods = periods.reverse();
-            this.setState({shopStory: reversePeriods})
+            this.setState({shopStory: reversePeriods, refreshing: false})
         })
         .catch(error => {
             console.log(error);
@@ -80,6 +86,7 @@ class HistoryPage extends Component {
             }
         });
         itemObjectList.push(theItems);
+        //console.log("THE ITEMS: ", theItems);
 
         const mapListJs = itemObjectList.map((item, index) =>
             <View style={historyStyle.receiptBodyOuter} key={index}>
@@ -132,6 +139,7 @@ class HistoryPage extends Component {
                 <View style={historyStyle.container}>
                     <FlatList style={historyStyle.historyList}
                     data={this.state.shopStory}
+                    ListEmptyComponent={(<Text style={{alignSelf: 'center'}}>Ingen historik</Text>)}
                     extraData={this.state.shopStory}
                     keyExtractor={(shopStory) => shopStory.period.from}
                     renderItem={item => this.renderHistoryList(item)}

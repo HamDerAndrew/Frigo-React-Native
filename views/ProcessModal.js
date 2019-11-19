@@ -20,26 +20,26 @@ class ProcessModal extends Component {
 
         return(
             <View style={modalStyle.modalWrapper}>
-                <View style={{ flex: 1, padding: 40}}>
-                    <View style={{alignItems: 'flex-end', paddingBottom: 50}}>
+                <View style={modalStyle.innerModal}>
+                    <View style={modalStyle.closeView}>
                         <TouchableHighlight style={{}} onPress={ () => this.props.navigation.navigate('AppMain')} underlayColor='transparent' activeOpacity={.3} >
                             <Image source={require('../assets/icons/close.png')} />
                         </TouchableHighlight>
                     </View>
-                    <ImageBackground imageStyle={{resizeMode: 'stretch'}} source={require('../assets/images/large/receipt.png')} style={{ flex: .8, width: '100%', height: '100%'}}>
-                    <View style={{flex: 1, padding: 35}}>
-                        <View style={{flex: .7, alignItems: 'center'}}>
+                    <ImageBackground imageStyle={{resizeMode: 'stretch'}} source={require('../assets/images/large/receipt.png')} style={modalStyle.backgroundImg}>
+                    <View style={modalStyle.innerImageContainer}>
+                        <View style={modalStyle.confirmed}>
                             <Text style={modalStyle.heading}>Køb registreret</Text>
-                            <Text style={{color: '#9ca0c3'}}>{`Købt ${this.state.date.getDate()}/${this.state.date.getMonth()}-${this.state.date.getFullYear()}`}</Text>
+                            <Text style={modalStyle.purchaseDate}>{`Købt ${this.state.date.getDate()}/${this.state.date.getMonth()}-${this.state.date.getFullYear()}`}</Text>
                         </View>
-                        <View style={{flex: 1.3}}>
+                        <View style={modalStyle.purchaseContainer}>
                             <Text style={modalStyle.subHeading}>Oversigt</Text>
-                            <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
+                            <View style={modalStyle.purchasedProduct}>
                                 <Text style={modalStyle.receiptText}>{productAmount} {productName}</Text>
                                 <Text style={modalStyle.receiptText}>{productPrice}kr.</Text>
                             </View>
                         </View>
-                        <View style={{flex: 1, alignItems: 'flex-end', justifyContent: 'space-between', flexDirection: 'row', paddingBottom: 20}}>
+                        <View style={modalStyle.receiptTotalContainer}>
                             <Text style={modalStyle.receiptTotal}>TOTAL</Text>
                             <Text style={modalStyle.receiptTotal}>{productPrice}kr.</Text>
                         </View>
@@ -56,10 +56,37 @@ const modalStyle = StyleSheet.create({
         flex: 1, 
         backgroundColor: '#1B3ACA'
     },
+    innerModal: {
+        flex: 1,
+        padding: 40
+    },
+    closeView: {
+        alignItems: 'flex-end', 
+        paddingBottom: 50
+    },
+    backgroundImg: {
+        flex: .8, 
+        width: '100%', 
+        height: '100%'
+    },
+    innerImageContainer: {
+        flex: 1, 
+        padding: 35
+    },
+    confirmed: {
+        flex: .7, 
+        alignItems: 'center'
+    },
     heading: {
         fontSize: 20,
         color: '#001DD1',
         marginBottom: 5
+    },
+    purchaseDate: {
+        color: '#9ca0c3'
+    },
+    purchaseContainer: {
+        flex: 1.3
     },
     subHeading: {
         fontSize: 18,
@@ -67,8 +94,19 @@ const modalStyle = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10
     },
+    purchasedProduct: {
+        flexDirection:'row', 
+        justifyContent: 'space-between'
+    },
     receiptText: {
         color: '#173bd1'
+    },
+    receiptTotalContainer: {
+        flex: 1, 
+        alignItems: 'flex-end', 
+        justifyContent: 'space-between', 
+        flexDirection: 'row', 
+        paddingBottom: 20
     },
     receiptTotal: {
         fontWeight: 'bold',

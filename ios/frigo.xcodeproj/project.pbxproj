@@ -67,7 +67,6 @@
 				46C344867CACD1BEB84F342E /* Pods-frigo.debug.xcconfig */,
 				510916E76EFEAFCE13ED15A1 /* Pods-frigo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -398,14 +397,14 @@
 			baseConfigurationReference = 46C344867CACD1BEB84F342E /* Pods-frigo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8XRBD9JCMN;
 				INFOPLIST_FILE = "$(SRCROOT)/frigo/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.houseofcode.enterprise.frigo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Frigo Distribution In House";
+				PROVISIONING_PROFILE_SPECIFIER = "Frigo Development";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -415,14 +414,14 @@
 			baseConfigurationReference = 510916E76EFEAFCE13ED15A1 /* Pods-frigo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8XRBD9JCMN;
 				INFOPLIST_FILE = "$(SRCROOT)/frigo/Supporting/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.houseofcode.enterprise.frigo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Frigo Distribution In House";
+				PROVISIONING_PROFILE_SPECIFIER = "Frigo Development";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
