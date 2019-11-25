@@ -6,7 +6,6 @@ import axios from 'axios';
 import setUserToken from '../redux/actions/SetUserToken';
 import { connect } from 'react-redux';
 import signIn from '../redux/actions/SignIn';
-import setItems from '../redux/actions/SetItems';
 
 
 class LoginPage extends Component {
@@ -31,23 +30,8 @@ tokenExists = async () => {
 }
 
 async componentDidMount() {
-  /* this.getProducts(); */
   this.tokenExists();
 }
-
-/*   getProducts = () => {
-    const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
-    const cmsHeader = { 
-      'Content-Type': 'application/json', 
-      //'Authorization': `Bearer ${this.props.userToken}` 
-    };
-    axios.get(url,cmsHeader)
-    .then((res) => {
-      const contentItems = res.data.data.products.items;
-      this.props.setItems(contentItems);
-    })
-    .catch(error => console.log("Error while fetching products: ", error))
-  } */
 
   checkValid = () => {
     const { email, password } = this.state;
@@ -167,14 +151,12 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken,
-    //contentItems: state.contentItems
   }
 };
 
 const mapDispatchToProps = {
   setUserToken,
   signIn,
-  //setItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -5,7 +5,6 @@ import ProcessModal from '../views/ProcessModal';
 import HistoryPage from '../views/HistoryPage';
 import AuthLoadingPage from '../views/AuthLoadingPage';
 import LoginPage from '../views/LoginPage';
-import PurchaseMulPage from '../views/PurchaseMulPage';
 import PaymentLoadingPage from '../views/PaymentLoadingPage'
 import CustomTabBar from '../Components/CustomTabBar';
 
@@ -16,9 +15,6 @@ const HomeStack = createStackNavigator(
         },
         Purchase: {
             screen: PurchasePage,
-        },
-        PurchaseMore: {
-          screen: PurchaseMulPage,
         },
         Payment: {
             screen: ProcessModal,

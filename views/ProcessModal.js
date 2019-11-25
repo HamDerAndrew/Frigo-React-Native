@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ImageBackground, Image, StyleSheet } from 'react-native';
+import { View, Text, ImageBackground, Image, StyleSheet, BackHandler } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 class ProcessModal extends Component {
@@ -7,10 +7,25 @@ class ProcessModal extends Component {
         title: 'Kvittering',
         header: null
     }
-    state = {
-        isVisible: true,
-        date: new Date()
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            date: new Date()
+        }
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton() {
+        return true;
+    }
 
     render() {
         const { navigation } = this.props;

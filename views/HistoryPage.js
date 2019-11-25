@@ -89,8 +89,7 @@ class HistoryPage extends Component {
             }
         });
         itemObjectList.push(theItems);
-        //console.log("THE ITEMS: ", theItems);
-
+        
         const mapListJs = itemObjectList.map((item, index) =>
             <View style={historyStyle.receiptBodyOuter} key={index}>
                 <View style={historyStyle.receiptLeftContainer}>

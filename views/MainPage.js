@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import SelectMultipleBtn from '../Components/SelectMultipleBtn';
 import signIn from '../redux/actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -23,9 +22,6 @@ constructor(props) {
 static navigationOptions = ({navigation}) => {
   return {
     title: 'Produkter',
-    /* headerRight: (
-      <SelectMultipleBtn onPress={navigation.getParam('selectionType')} />
-    ), */
     headerRight: (
       <LogOutComponent onPress={navigation.getParam('logMeOut')} />
     )
@@ -34,44 +30,9 @@ static navigationOptions = ({navigation}) => {
 
 async componentDidMount() {
   this.getData();
-/*   this.testApi(),
-  this.getMoviesFromApiAsync();
-  this.fetchProd(); */
-  //this.props.navigation.setParams( {'selectionType': this.setMultipleState} )
+  this.getProducts();
   this.props.navigation.setParams( {'logMeOut': this.signOut} )
 }
-
-/* testApi = () => {
-  const url ="https://jsonplaceholder.typicode.com/todos/1";
-  axios.get(url)
-  .then( (response) => {
-    console.log(response.data);
-  })
-  .catch(error => console.log("JSON API ERROR", error));
-}
-
-async fetchProd() {
-  return fetch('https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da')
-    .then( (response) => response.json())
-    .then( (responseJson) => {
-      console.log(responseJson.movies);
-    })
-    .catch( (error) => {
-      console.log("Fetch Products error: ", );
-      console.log(error);
-    })
-}
-
- async getMoviesFromApiAsync() {
-  return fetch('https://facebook.github.io/react-native/movies.json')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return console.log(responseJson.movies);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-} */
 
 //Get products for Redux Store to be used on History Page.
 getProducts = () => {
@@ -103,7 +64,6 @@ getData = () => {
       return item;
     });
     /* productData = res; */
-    //console.log(res.data.data.products);
     this.setState( {productData: res} );
     }
   )
@@ -148,7 +108,6 @@ selectItem = (data) => {
 }
 
 renderList = data => {
-  if(this.state.selectMultiple === false) {
     return(
       <TouchableHighlight underlayColor='transparent' activeOpacity={.3} onPress={ () => {
         this.props.navigation.navigate('Purchase', {
@@ -170,22 +129,6 @@ renderList = data => {
         </View>
       </TouchableHighlight>
       );
-  } else {
-    return(
-      <TouchableHighlight underlayColor='transparent' activeOpacity={.3}  onPress={ () => this.selectItem(data)}>
-        <View style={[productStyles.listContainer, data.item.selectedHighlight]}>
-          <View style={{flexDirection: 'row'}}>
-          <Image source={{ uri: data.item.list_image.file_url }} style={productStyles.productListImg} />
-            <View style={productStyles.productInfo}>
-                <Text style={productStyles.productItems}>{data.item.title}</Text>
-                <Text style={productStyles.itemPrice}>{data.item.price} kr.</Text>
-            </View>
-          </View>
-          <Image style={productStyles.listArrow} />
-        </View>
-      </TouchableHighlight>
-      );
-  }
 }
 
   render() {
@@ -197,16 +140,6 @@ renderList = data => {
             extraData={this.state}
             renderItem={item => this.renderList(item)}
             />
-            { //Toggle the 'Next' button for multiple selection
-              this.state.selectMultiple ? 
-              <TouchableHighlight underlayColor='transparent' style={productStyles.nextBtn} activeOpacity={.3} onPress={ () => {
-                this.props.navigation.navigate('PurchaseMore', {
-                  productList: this.state.selectedItems
-                });
-              } }> 
-              <Text style={{alignSelf: 'center', color: 'white'}}>NÆSTE</Text>
-              </TouchableHighlight> : null
-            }
       </View>
     );
   }

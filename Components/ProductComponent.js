@@ -41,27 +41,6 @@ class ProductComponent extends Component {
         });
     }
 
-/*     testPurchase = () => {
-        const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchase';
-        const header = {
-            'Content-Type': 'application/json',
-            //'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJlbWFpbCI6ImFzc2xAaG91c2VvZmNvZGUuaW8iLCJuYW1lIjoiQW5kcsOpIiwiZXhwIjoxNTc3ODIyNjEwfQ.wBA_dQw65Hw8sGQq0Rf8QIONhWgCcH1KA1l1hvIU1Jk'
-        }
-        const data = {
-            items: [
-                {
-                    product_id: this.props.itemId,
-                    quantity: this.state.itemAmount
-                }
-            ]
-        }
-        //Using axios default headers because the header object will not be sent otherwise.
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
-        axios.post(url,data,header)
-        .then(res => console.log(res.data))
-        .catch(error => console.log(error))
-    } */
-
     paymentStart = () => {
         Alert.alert(
             'Bekræft',
