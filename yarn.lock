@@ -860,10 +860,10 @@
   resolved "https://registry.yarnpkg.com/@popmotion/easing/-/easing-1.0.2.tgz#17d925c45b4bf44189e5a38038d149df42d8c0b4"
   integrity sha512-IkdW0TNmRnWTeWI7aGQIVDbKXPWHVEYdGgd5ZR4SH/Ty/61p63jCjrPxX1XrR7IGkl08bjhJROStD7j+RKgoIw==
 
-"@react-native-community/async-storage@^1.6.2":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.6.2.tgz#a19ca7149c4dfe8216f2330e6b1ebfe2d075ef92"
-  integrity sha512-EJGsbrHubK1mGxPjWB74AaHAd5m9I+Gg2RRPZzMK6org7QOU9WOBnIMFqoeVto3hKOaEPlk8NV74H6G34/2pZQ==
+"@react-native-community/async-storage@^1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.6.3.tgz#1a713e8c5cacd543ab8539080a5ce57ad917da88"
+  integrity sha512-67K2akX90uc252zKMYJt1wISvaEH6ARtdTI9bUkwmOFXVPyVk1DfPnaRmyUzcVdeCBOO1n0xv9YO2GSppIormQ==
 
 "@react-native-community/cli@^1.2.1":
   version "1.11.2"

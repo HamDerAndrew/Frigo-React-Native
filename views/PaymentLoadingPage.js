@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import ProcessIndicator from '../Components/ProcessIndicator';
 import { connect } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
 class PaymentLoadingPage extends Component {
     static navigationOptions = {
+        title: 'Payment Processing...',
         header: null
     }
     constructor(props) {
@@ -30,7 +32,7 @@ class PaymentLoadingPage extends Component {
         }, 3000);
     } */
 
-    purchaseProduct = () => {
+    purchaseProduct = async () => {
         const { navigation } = this.props;
         const productName = navigation.getParam('productName', 'NO-PRODUCT');
         const productAmount = navigation.getParam('productAmount', 'NO-AMOUNT');
@@ -49,8 +51,10 @@ class PaymentLoadingPage extends Component {
                 }
             ]
         }
+        const localToken = await SecureStore.getItemAsync('userToken');
         //Using axios default headers because the header object will not be sent otherwise.
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localToken}`;
+        //axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
         axios.post(url,data,header)
         .then((response) => {
             this.props.navigation.navigate('Payment', {

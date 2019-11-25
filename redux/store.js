@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux'
+/* import { createStore, applyMiddleware } from 'redux'
 import reducers from './reducers';
 import AsyncStorage from '@react-native-community/async-storage';
 import { persistStore, persistReducer } from 'redux-persist'
@@ -24,4 +24,4 @@ export const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
  );
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store); */

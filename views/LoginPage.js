@@ -7,7 +7,6 @@ import setUserToken from '../redux/actions/SetUserToken';
 import { connect } from 'react-redux';
 import signIn from '../redux/actions/SignIn';
 import setItems from '../redux/actions/SetItems';
-import AsyncStorage from '@react-native-community/async-storage';
 
 
 class LoginPage extends Component {
@@ -16,9 +15,7 @@ class LoginPage extends Component {
     this.state = {
       email: '',
       password: '',
-      rememberMe: false
     };
-    this.getProducts()
   }
   static navigationOptions = {
     title: 'Log in',
@@ -28,14 +25,17 @@ tokenExists = async () => {
   const token = await SecureStore.getItemAsync('userToken');
   if(token) {
     this.props.navigation.navigate('AuthLoading');
+  } else {
+    console.log("NO TOKEN");
   }
 }
 
 async componentDidMount() {
+  /* this.getProducts(); */
   this.tokenExists();
 }
 
-  getProducts = () => {
+/*   getProducts = () => {
     const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
     const cmsHeader = { 
       'Content-Type': 'application/json', 
@@ -46,8 +46,8 @@ async componentDidMount() {
       const contentItems = res.data.data.products.items;
       this.props.setItems(contentItems);
     })
-    .catch(error => console.log(error))
-  }
+    .catch(error => console.log("Error while fetching products: ", error))
+  } */
 
   checkValid = () => {
     const { email, password } = this.state;
@@ -68,7 +68,7 @@ async componentDidMount() {
       this.props.navigation.navigate('AuthLoading');
     })
     .catch((error) => {
-      console.log('Error from server: ' + error)
+      console.log('Error from server: ', error)
       alert("Forkert brugernavn og/eller password");
     });
   }
@@ -82,8 +82,8 @@ async componentDidMount() {
                     </View>
                     <View style={loginStyles.loginContainer}>
                         <View style={loginStyles.inputContainer}>
-                            <TextInput keyboardType={"email-address"} style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
-                            <TextInput style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
+                            <TextInput autoCompleteType={"email"} keyboardType={"email-address"} style={loginStyles.inputStyle} onChangeText={ (email) => this.setState({email}) } placeholder={'E-mail'} selectTextOnFocus={true} value={this.state.email} />
+                            <TextInput autoCompleteType={"password"} style={loginStyles.inputStyle} onChangeText={ (password) => this.setState({password}) } placeholder={'Password'} secureTextEntry={true} selectTextOnFocus={true} value={this.state.password} />
                         </View>
                     </View>
                     <View style={loginStyles.loginBtnContainer}>
@@ -167,14 +167,14 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
     userToken: state.userToken,
-    contentItems: state.contentItems
+    //contentItems: state.contentItems
   }
 };
 
 const mapDispatchToProps = {
   setUserToken,
   signIn,
-  setItems
+  //setItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

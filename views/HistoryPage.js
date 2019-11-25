@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
 class HistoryPage extends Component {
@@ -23,13 +24,15 @@ class HistoryPage extends Component {
         console.log("HistoryPage did Mount")
     }
 
-    getShopHistory = () => {
+    getShopHistory = async () => {
         const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/zenegy/purchases';
         const cmsHeader = { 
             'Content-Type': 'application/json', 
           };
+        const localToken = await SecureStore.getItemAsync('userToken');
         //Using axios default headers because the header object will not be sent otherwise(bug?).
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localToken}`;
+        //axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.userToken}`;
         axios.get(url, cmsHeader)
         .then((res) => {
             const periods = res.data.periods;

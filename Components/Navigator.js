@@ -123,6 +123,6 @@ const HistoryStack = createStackNavigator(
           Auth: AuthStack,
       },
       {
-          initialRouteName: 'AuthLoading',
+          initialRouteName: 'Auth',
       }
   ));

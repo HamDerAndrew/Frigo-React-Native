@@ -6,6 +6,7 @@ import signIn from '../redux/actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import unsetToken from '../redux/actions/UnsetToken';
+import setItems from '../redux/actions/SetItems';
 import axios from 'axios';
 import LogOutComponent from '../Components/LogOutComponent';
 
@@ -31,10 +32,60 @@ static navigationOptions = ({navigation}) => {
   }
 }
 
-componentDidMount() {
+async componentDidMount() {
   this.getData();
+/*   this.testApi(),
+  this.getMoviesFromApiAsync();
+  this.fetchProd(); */
   //this.props.navigation.setParams( {'selectionType': this.setMultipleState} )
   this.props.navigation.setParams( {'logMeOut': this.signOut} )
+}
+
+/* testApi = () => {
+  const url ="https://jsonplaceholder.typicode.com/todos/1";
+  axios.get(url)
+  .then( (response) => {
+    console.log(response.data);
+  })
+  .catch(error => console.log("JSON API ERROR", error));
+}
+
+async fetchProd() {
+  return fetch('https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da')
+    .then( (response) => response.json())
+    .then( (responseJson) => {
+      console.log(responseJson.movies);
+    })
+    .catch( (error) => {
+      console.log("Fetch Products error: ", );
+      console.log(error);
+    })
+}
+
+ async getMoviesFromApiAsync() {
+  return fetch('https://facebook.github.io/react-native/movies.json')
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return console.log(responseJson.movies);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+} */
+
+//Get products for Redux Store to be used on History Page.
+getProducts = () => {
+  const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
+  const cmsHeader = { 
+    'Content-Type': 'application/json', 
+    //'Authorization': `Bearer ${this.props.userToken}` 
+  };
+  axios.get(url,cmsHeader)
+  .then((res) => {
+    const contentItems = res.data.data.products.items;
+    this.props.setItems(contentItems);
+  })
+  .catch(error => console.log("Error while fetching products: ", error))
 }
 
 getData = () => {
@@ -51,11 +102,12 @@ getData = () => {
       item.price = (parseFloat(item.price).toFixed(2) / 100);
       return item;
     });
-    productData = res;
+    /* productData = res; */
+    //console.log(res.data.data.products);
     this.setState( {productData: res} );
     }
   )
-  .catch((error) => console.log(error)); 
+  .catch((error) => console.log("getData error: ", error)); 
 }
 
 setMultipleState = () => {
@@ -230,13 +282,15 @@ const productStyles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.loggedIn,
-    userToken: state.userToken
+    userToken: state.userToken,
+    contentItems: state.contentItems
   }
 };
 
 const mapDispatchToProps = {
   signIn,
-  unsetToken
+  unsetToken,
+  setItems
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainPage);

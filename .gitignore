@@ -10,3 +10,7 @@ npm-debug.*
 web-build/
 web-report/
 .idea
+node_modules
+android/**/*.iml
+android/app/build/
+android/local.properties

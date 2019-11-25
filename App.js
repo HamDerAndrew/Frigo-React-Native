@@ -1,10 +1,23 @@
 import React from 'react';
 import {Text,View, ActivityIndicator} from 'react-native';
 import { Provider } from 'react-redux';
-import { persistor, store } from './redux/store';
+import { createStore } from 'redux';
+import AllReducers from './redux/reducers/index'; 
 import Navigator from './Components/Navigator';
 import * as Font from 'expo-font';
-import { PersistGate } from 'redux-persist/integration/react';
+
+
+const store = createStore(
+  AllReducers, 
+  //initial state
+  {
+      loggedIn: false,
+      userToken: '',
+      contentItems: []
+  },
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+ );
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,9 +48,7 @@ render() {
   }
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={null}>
-        <Navigator />
-      </PersistGate>
+      <Navigator />
     </Provider>
     );
   }

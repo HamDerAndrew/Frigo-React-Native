@@ -5,10 +5,13 @@ import * as SecureStore from 'expo-secure-store';
 class AuthLoadingPage extends Component {
     constructor(props) {
         super(props);
-
-        this.checkToken();
+        
     }
 
+    componentDidMount() {
+        this.checkToken();
+    }
+    
     checkToken = async () => {
         const userToken = await SecureStore.getItemAsync('userToken');
         this.props.navigation.navigate(userToken ? 'Main' : 'Auth')
