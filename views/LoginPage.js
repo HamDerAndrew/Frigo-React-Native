@@ -52,7 +52,7 @@ async componentDidMount() {
       this.props.navigation.navigate('AuthLoading');
     })
     .catch((error) => {
-      console.log('Error from server: ', error)
+      console.log(error);
       alert("Forkert brugernavn og/eller password");
     });
   }

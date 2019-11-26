@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import ProductComponent from '../Components/ProductComponent';
 
 class PurchasePage extends Component {

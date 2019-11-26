@@ -92,8 +92,6 @@ const HistoryStack = createStackNavigator(
     {
         Produkter: HomeStack,
         Historik: HistoryStack,
-        //Profil: ProfileStack
-  
     },
     {
       initialRouteName: 'Produkter',

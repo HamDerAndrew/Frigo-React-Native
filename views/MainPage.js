@@ -13,10 +13,7 @@ class MainPage extends Component {
 constructor(props) {
   super(props)
   this.state = {
-    selectMultiple: false,
-    productData: [],
-    listSource: [],
-    selectedItems: [],
+    productData: []
   };
 }
 static navigationOptions = ({navigation}) => {
@@ -29,12 +26,10 @@ static navigationOptions = ({navigation}) => {
 }
 
 async componentDidMount() {
-  this.getData();
   this.getProducts();
   this.props.navigation.setParams( {'logMeOut': this.signOut} )
 }
 
-//Get products for Redux Store to be used on History Page.
 getProducts = () => {
   const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
   const cmsHeader = { 
@@ -44,34 +39,16 @@ getProducts = () => {
   axios.get(url,cmsHeader)
   .then((res) => {
     const contentItems = res.data.data.products.items;
+    //Set products in Redux Store. Used for extracting the name from the ID on the HistoryPage.
     this.props.setItems(contentItems);
-  })
-  .catch(error => console.log("Error while fetching products: ", error))
-}
-
-getData = () => {
-  const url = 'https://staging.appcms.dk/api/cX8hvUC6GEKGgUuvzsBCNA/content/da';
-  const cmsHeader = { 
-    'Content-Type': 'application/json', 
-  };
-  axios.get(url, cmsHeader)
-  .then( (res) => {
-    res = res.data.data.products.items.map( item => {
-      item.isSelected = false;
-      item.selectedHighlight = productStyles.listContainer;
-      item.selectedImg = require('../assets/icons/list-checkmark.png');
+    contentItems.map( item => {
+      //convert value from 'øre' to 'kroner'.
       item.price = (parseFloat(item.price).toFixed(2) / 100);
       return item;
     });
-    /* productData = res; */
-    this.setState( {productData: res} );
-    }
-  )
-  .catch((error) => console.log("getData error: ", error)); 
-}
-
-setMultipleState = () => {
-  this.setState({selectMultiple: !this.state.selectMultiple})
+    this.setState({productData: contentItems});
+  })
+  .catch(error => console.log(error))
 }
 
 signOut = () => {
@@ -80,31 +57,6 @@ signOut = () => {
   SecureStore.deleteItemAsync('userToken');
   this.props.unsetToken();
   this.props.navigation.navigate('Auth');
-}
-
-/*Function for selecting more than 1 different product to purchase. 
-Find index of the product and add a 'selected' style to it */
-selectItem = (data) => {
-  //toggle between isSelected true and false
-  data.item.isSelected = !data.item.isSelected;
-  data.item.selectedHighlight = data.item.isSelected ? productStyles.selectedStyle : productStyles.listContainer;
-  const index = this.state.productData.findIndex(
-    item => data.item.id === item.id
-  );
-  this.state.productData[index] = data.item;
-  //push items selected into the multiple selection list.
-  if(data.item.isSelected === true) {
-    this.state.selectedItems.push(data.item);
-  } else {
-    //find the index of the item selected.
-    const itemIndex = this.state.selectedItems.indexOf(data.item);
-    //remove the item from selected index.
-    this.state.selectedItems.splice(itemIndex, 1);
-  }
-  this.setState({
-    productData: this.state.productData,
-    selectedItems: this.state.selectedItems
-  })
 }
 
 renderList = data => {

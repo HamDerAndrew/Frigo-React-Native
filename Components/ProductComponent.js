@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View, Button, Image, Modal, Animated, Easing, Alert } from 'react-native';
 import React, { Component } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { connect } from 'react-redux';
-import axios from 'axios';
 import { Platform } from '@unimodules/core';
 
 class ProductComponent extends Component {

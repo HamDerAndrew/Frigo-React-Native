@@ -1,36 +1,20 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import ProcessIndicator from '../Components/ProcessIndicator';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
 class PaymentLoadingPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.purchaseProduct();
+    }
+
     static navigationOptions = {
         title: 'Payment Processing...',
         header: null
     }
-    constructor(props) {
-        super(props);
-
-        //this.checkPayment();
-        this.purchaseProduct();
-    }
-
-/*     checkPayment = () => {
-        const { navigation } = this.props;
-        const productName = navigation.getParam('productName', 'NO-PRODUCT');
-        const productAmount = navigation.getParam('productAmount', 'NO-AMOUNT');
-        const productPrice = navigation.getParam('productPrice', 'NO-PRICE');
-
-        setTimeout( () => {
-            this.props.navigation.navigate('Payment', {
-                productName: productName,
-                productAmount: productAmount,
-                productPrice: productPrice
-            });
-        }, 3000);
-    } */
 
     purchaseProduct = async () => {
         const { navigation } = this.props;
@@ -69,7 +53,6 @@ class PaymentLoadingPage extends Component {
     render() {
         return(
             <View style={{flex: 1, justifyContent: 'center', alignItems:'center'}}>
-                {/* <ProcessIndicator /> */}
                 <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );

@@ -9,8 +9,6 @@ class HistoryPage extends Component {
         super(props)
         this.state = {
             shopStory: [],
-            refreshing: false,
-            count: 0
         };
     }
 
@@ -35,7 +33,7 @@ class HistoryPage extends Component {
         .then((res) => {
             const periods = res.data.periods;
             const reversePeriods = periods.reverse();
-            this.setState({shopStory: reversePeriods, refreshing: false})
+            this.setState({shopStory: reversePeriods})
         })
         .catch(error => {
             console.log(error);
@@ -112,7 +110,7 @@ class HistoryPage extends Component {
                                     productPrice = product.price * value;
                                 }
                             });
-                            return (<Text style={[historyStyle.regularText, {textAlign: 'right'}]} key={index}>{(parseFloat(productPrice).toFixed(2) / 100)} kr.</Text>)
+                            return (<Text style={[historyStyle.regularText, {textAlign: 'right'}]} key={index}>{productPrice} kr.</Text>)
                         })}
                 </View>
             </View> 

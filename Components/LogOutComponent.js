@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const logOutComponent = (props) => {
     return(
         <TouchableOpacity style={multipleBtn.btnContainer} onPress={props.onPress}>
-            <Text style={{fontFamily: 'nunitoregular', fontSize: 14, color: 'white'}}>Log Ud</Text>
+            <Text style={multipleBtn.btnText}>Log Ud</Text>
       </TouchableOpacity>
     );
 }
@@ -17,6 +17,11 @@ const multipleBtn = StyleSheet.create({
         borderRadius: 5,
         padding: 10
     },
+    btnText: {
+        fontFamily: 'nunitoregular', 
+        fontSize: 14, 
+        color: 'white'
+    }
 });
 
 export default logOutComponent;

@@ -3,16 +3,16 @@ import { View, Text, ImageBackground, Image, StyleSheet, BackHandler } from 'rea
 import { TouchableHighlight } from 'react-native-gesture-handler';
 
 class ProcessModal extends Component {
-    static navigationOptions = {
-        title: 'Kvittering',
-        header: null
-    }
-
     constructor(props) {
         super(props);
         this.state = {
             date: new Date()
         }
+    }
+
+    static navigationOptions = {
+        title: 'Kvittering',
+        header: null
     }
 
     componentDidMount() {
