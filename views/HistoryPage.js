@@ -19,9 +19,7 @@ class HistoryPage extends Component {
         this._navListener = this.props.navigation.addListener('didFocus', () => {
             // get your new data here and then set state it will rerender
             this.getShopHistory();
-            console.log("Data")
             });
-        console.log("HistoryPage did Mount")
     }
 
     getShopHistory = async () => {

@@ -61,10 +61,11 @@ public class AppConstants {
         
         
         
+        
         // ADD EMBEDDED RESPONSES HERE
         // START EMBEDDED RESPONSES
         embeddedResponses.add(new Constants.EmbeddedResponse("https://exp.host/@hamderandrew/frigo", "assets://shell-app-manifest.json", "application/json"));
-        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40hamderandrew%2Ffrigo%2F1.0.0%2Fda46b70819e32257f5b00e6c1f2680a7-34.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
+        embeddedResponses.add(new Constants.EmbeddedResponse("https://d1wp6m56sqw74a.cloudfront.net/%40hamderandrew%2Ffrigo%2F1.0.0%2Fa19594628fec86d0ef836c6a4535e4af-34.0.0-android.js", "assets://shell-app.bundle", "application/javascript"));
         // END EMBEDDED RESPONSES
     EMBEDDED_RESPONSES = embeddedResponses;
   }
