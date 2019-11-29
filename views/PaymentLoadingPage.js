@@ -6,13 +6,15 @@ import axios from 'axios';
 class PaymentLoadingPage extends Component {
     constructor(props) {
         super(props);
-
-        this.purchaseProduct();
     }
 
     static navigationOptions = {
         title: 'Payment Processing...',
         header: null
+    }
+
+    componentDidMount() {
+        this.purchaseProduct();
     }
 
     purchaseProduct = async () => {
