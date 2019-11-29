@@ -168,12 +168,3 @@ const styling = StyleSheet.create({
 });
 
 export default ProductComponent;
-
-/* const mapStateToProps = (state) => {
-    return {
-      loggedIn: state.loggedIn,
-      userToken: state.userToken
-    }
-  };
-
-export default connect(mapStateToProps)(ProductComponent); */

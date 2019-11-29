@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
@@ -59,11 +58,4 @@ class PaymentLoadingPage extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-      loggedIn: state.loggedIn,
-      userToken: state.userToken
-    }
-  };
-
-export default connect(mapStateToProps)(PaymentLoadingPage);
+export default PaymentLoadingPage;

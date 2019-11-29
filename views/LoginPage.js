@@ -3,9 +3,6 @@ import { View, Text, ImageBackground, StyleSheet, TextInput, Switch, Dimensions,
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
-import setUserToken from '../redux/actions/SetUserToken';
-import { connect } from 'react-redux';
-import signIn from '../redux/actions/SignIn';
 
 
 class LoginPage extends Component {
@@ -45,10 +42,6 @@ async componentDidMount() {
     .then((response) => {
       //Store the token from AppCms login
       SecureStore.setItemAsync('userToken', response.data.token);
-      //use Redux action 'SetUserToken' to assign the token to the key 'userToken'
-      this.props.setUserToken(response.data.token);
-      //set loggedIn to true
-      this.props.signIn();
       this.props.navigation.navigate('AuthLoading');
     })
     .catch((error) => {
@@ -147,16 +140,4 @@ const loginStyles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    loggedIn: state.loggedIn,
-    userToken: state.userToken,
-  }
-};
-
-const mapDispatchToProps = {
-  setUserToken,
-  signIn,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default LoginPage;

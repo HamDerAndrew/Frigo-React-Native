@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
-import signIn from '../redux/actions/SignIn';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
-import unsetToken from '../redux/actions/UnsetToken';
 import setItems from '../redux/actions/SetItems';
 import axios from 'axios';
 import LogOutComponent from '../Components/LogOutComponent';
@@ -52,10 +50,7 @@ getProducts = () => {
 }
 
 signOut = () => {
-  //set loggedIn to false
-  this.props.signIn();
   SecureStore.deleteItemAsync('userToken');
-  this.props.unsetToken();
   this.props.navigation.navigate('Auth');
 }
 
@@ -100,10 +95,6 @@ renderList = data => {
 const productStyles = StyleSheet.create({
   productWrapper: {
       flex: 1, 
-  },
-  selectedStyle: {
-    borderColor: '#173BD1',
-    borderWidth: 1
   },
   flatList: {
     backgroundColor: '#EFF2F5'
@@ -150,31 +141,15 @@ const productStyles = StyleSheet.create({
   listArrow: {
     alignSelf: 'center'
   },
-  nextBtn: {
-    backgroundColor: '#173CD1', 
-    justifyContent: 'center', 
-    alignSelf: 'center', 
-    borderWidth: 1, 
-    borderColor: 'white', 
-    borderRadius: 70, 
-    padding: 15, 
-    width: 75, 
-    height: 75,
-    marginBottom: 15
-  }
 });
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn,
-    userToken: state.userToken,
     contentItems: state.contentItems
   }
 };
 
 const mapDispatchToProps = {
-  signIn,
-  unsetToken,
   setItems
 }
 

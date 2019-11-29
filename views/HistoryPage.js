@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
@@ -86,7 +86,7 @@ class HistoryPage extends Component {
         });
         itemObjectList.push(theItems);
         
-        const mapListJs = itemObjectList.map((item, index) =>
+        const itemsPurchased = itemObjectList.map((item, index) =>
             <View style={historyStyle.receiptBodyOuter} key={index}>
                 <View style={historyStyle.receiptLeftContainer}>
                     <View style={historyStyle.receiptBodyInner}>
@@ -121,7 +121,7 @@ class HistoryPage extends Component {
                 <View style={{margin: 10}}>
                     {data.item.period.current ? <Text style={historyStyle.boldText}>Nuværende</Text> : null}
                     <Text style={historyStyle.receiptHeader}>Periode: {this.reverseDate(data.item.period.from)}  -  {this.reverseDate(data.item.period.to)}</Text>
-                    {mapListJs}
+                    {itemsPurchased}
                 </View>
                 <View style={historyStyle.receiptFooter}>
                     <Text style={historyStyle.boldText}>TOTAL</Text>
@@ -220,8 +220,6 @@ const historyStyle = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      loggedIn: state.loggedIn,
-      userToken: state.userToken,
       contentItems: state.contentItems
     }
   };
