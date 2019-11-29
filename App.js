@@ -1,20 +1,9 @@
 import React from 'react';
 import {Text,View, ActivityIndicator} from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import AllReducers from './redux/reducers/index'; 
 import Navigator from './Components/Navigator';
 import * as Font from 'expo-font';
-
-
-const store = createStore(
-  AllReducers, 
-  //initial state
-  {
-      contentItems: []
-  },
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
- );
+import {store} from './redux/store';
 
 
 export default class App extends React.Component {

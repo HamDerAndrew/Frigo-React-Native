@@ -1,27 +1,12 @@
-/* import { createStore, applyMiddleware } from 'redux'
-import reducers from './reducers';
-import AsyncStorage from '@react-native-community/async-storage';
-import { persistStore, persistReducer } from 'redux-persist'
-import logger from 'redux-logger';
- 
- 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage
-}
- 
-const persistedReducer = persistReducer(persistConfig, reducers)
+import { createStore } from 'redux';
+import AllReducers from './reducers/index'; 
+
 
 export const store = createStore(
-  persistedReducer, 
+  AllReducers, 
   //initial state
   {
-      loggedIn: false,
-      userToken: '',
       contentItems: []
   },
-  applyMiddleware(logger),
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
  );
-
-export const persistor = persistStore(store); */
