@@ -10,14 +10,6 @@ fra køleskabet i huset.
 -Version
 1.0.0
 
-### How do I get set up? ###
-
-Download/Clone repository og kør en "npm install" i terminalen.
-
-### Contribution guidelines ###
-Læs her:
-https://houseofcode.atlassian.net/wiki/spaces/Test3/pages/816873760/Branching+policy
-
 ### Who do I talk to? ###
 
 André Larsen
